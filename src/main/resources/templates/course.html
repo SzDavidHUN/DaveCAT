@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${courseTitle} + ' - DaveCAT 0.1'"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <!-- jQuery library --> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS --> <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript --> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding-top: 45px; <!-- 65 -->
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar bg-dark navbar-dark navbar-expand-sm fixed-top">
+    <a class="navbar-brand" href="/">DaveCAT 0.1</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/courses">Aktuális katalógusok</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Korábbi katalógusok</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/users">Felhasználók</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Bejelentkezés</a>
+        </li>
+    </ul>
+    <div class="nav">
+        <form class="form-inline" action="/action_page.php">
+            <input class="form-control mr-sm-2" type="text" placeholder="Neptunkód" />
+            <button class="btn btn-success mr-sm-2" type="submit">Keres</button>
+        </form>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3" th:text="${courseTitle}"/>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <p>
+                <b>Időpont: </b><span th:text="${courseTime}" /><br />
+                <b>Hely: </b><span th:text="${coursePlace}" /><br />
+                <a th:text="${courseDescription}" />
+            </p>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5><b>Jelenléti ív</b></h5>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th>Név</th>
+                            <th>Neptun</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="attendance : ${attendances}">
+                                <td th:text="${attendance.getUser().getName()}" />
+                                <td th:text="${attendance.getUser().getNeptun()}" />
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /*<a class="btn btn-warning" th:href="'editParticipants?id=' + ${courseId}">Résztvevők szerkesztése</a>*/-->
+            <a class="btn btn-warning" th:href="@{'/edit'(type = 'course', id = ${courseId})}">Résztvevők szerkesztése</a>
+            <a class="btn btn-danger" th:href="'removeCourse?id=' + ${courseId}">Kurzus törlése</a>
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+    </div>
+</div>
+
+<nav class="navbar bg-dark navbar-dark navbar-expand-sm fixed-bottom">
+    <div class="navbar-brand">Katalógus 0.1</div>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <div class="navbar-text">Szabó Dávid</div>
+        </li>
+        <li class="nav-item">
+            <div class="nav-link">Kapcsolat</div>
+        </li>
+        <li class="nav-item">
+            <div class="nav-link">Admin</div>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DaveCAT 0.1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <!-- jQuery library --> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS --> <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript --> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding-top: 45px; <!-- 45/65 -->
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar bg-dark navbar-dark navbar-expand-sm fixed-top">
+    <a class="navbar-brand" href="/">DaveCAT 0.1</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/courses">Aktuális katalógusok</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Korábbi katalógusok</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/users">Felhasználók</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Bejelentkezés</a>
+        </li>
+    </ul>
+    <div class="nav">
+        <form class="form-inline" action="/action_page.php">
+            <input class="form-control mr-sm-2" type="text" placeholder="Neptunkód" />
+            <button class="btn btn-success mr-sm-2" type="submit">Keres</button>
+        </form>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3" th:switch="${type}">
+            <span th:case="'user'">Kapcsolt kurzusok</span>
+            <span th:case="'course'">Kapcsolt hallgatók</span>
+        </h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <b th:switch="${type}">
+                            <span th:case="'user'">Jelenlegi kurzusok</span>
+                            <span th:case="'course'">Jelenlegi hallgatók</span>
+                        </b>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <table class="table table-hover">
+                            <thead>
+                                <div th:switch="${type}">
+                                    <div th:case="'course'">
+                                        <th>Név</th>
+                                        <th>Neptun</th>
+                                        <th>Töröl</th>
+                                    </div>
+                                    <div th:case="'user'">
+                                        <th>Kurzus</th>
+                                        <th>Töröl</th>
+                                    </div>
+                                </div>
+                            </thead>
+                            <tbody>
+                            <tr th:each="attendance : ${attendances}" th:switch="${type}">
+                                <div th:case="'course'">
+                                    <td >
+                                        <a th:text="${attendance.getUser().getName()}" th:href="@{'/user'(id = ${attendance.getUser().getId()})}" />
+                                    </td>
+                                    <td >
+                                        <a th:text="${attendance.getUser().getNeptun()}" />
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/editUser'(mode = 'add', id = ${attendance.getUser().getId()})}"><b>×</b></a>
+                                    </td>
+                                </div>
+                                <div th:case="'user'">
+                                    <td>
+                                        <a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/course'(id=${attendance.getCourse().getId()})}"/>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/editCourse'(mode = 'add', id = ${attendance.getCourse().getId()})}"><b>×</b></a>
+                                    </td>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        <b th:switch="${type}">
+                            <span th:case="'user'">Összes kurzus</span>
+                            <span th:case="'course'">Összes hallgató</span>
+                        </b>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <div th:switch="${type}">
+                                    <div th:case="'course'">
+                                        <th>Név</th>
+                                        <th>Neptun</th>
+                                        <th>Töröl</th>
+                                    </div>
+                                    <div th:case="'user'">
+                                        <th>Kurzus</th>
+                                        <th>Hely</th>
+                                        <th>Hozzáad</th>
+                                    </div>
+                                </div>
+                            </thead>
+                            <tbody th:switch="${type}">
+                                <div th:case="'course'">
+                                    <tr th:each="user : ${users}">
+                                        <td>
+                                            <a th:href="@{'/user'(id = ${user.getId()})}" th:text="${user.getName()}" />
+                                        </td>
+                                        <td>
+                                            <a th:text="${user.getNeptun()}" />
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'/edit'(mode='course', courseId = ${id}, userId = ${user.getId()})}"><b>+</b></a>
+                                        </td>
+                                    </tr>
+                                </div>
+                                <div th:case="'user'">
+                                    <tr th:each="course : ${courses}">
+                                        <td>
+                                            <a th:href="@{'/course'(id = ${course.getId()})}" th:text="${course.getTitle()}" />
+                                        </td>
+                                        <td>
+                                            <a th:text="${course.getLocation()}" />
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'/edit'(mode='course', courseId = ${course.getId()}, userId = ${id})}"><b>+</b></a>
+                                        </td>
+                                    </tr>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />&nbsp;<br />&nbsp;
+            <br />&nbsp;<br />&nbsp;
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+    </div>
+</div>
+
+<nav class="navbar bg-dark navbar-dark navbar-expand-sm fixed-bottom">
+    <div class="navbar-brand">Katalógus 0.1</div>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <div class="navbar-text">Szabó Dávid</div>
+        </li>
+        <li class="nav-item">
+            <div class="nav-link">Kapcsolat</div>
+        </li>
+        <li class="nav-item">
+            <div class="nav-link">Admin</div>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
