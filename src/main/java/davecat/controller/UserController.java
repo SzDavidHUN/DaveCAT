@@ -16,10 +16,9 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
-
+    private UserRepository userRepository;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/users")
     public String users(Model model){
