@@ -51,14 +51,17 @@ public class CommonService {
         return true;
     }
 
-    public boolean addAttendance(UUID courseID, UUID userID, int length){
-        attendanceRepository.save(
-                new Attendance(
-                        userRepository.findOne(userID),
-                        courseRepository.findOne(courseID),
-                        length
-                )
-        );
+    public boolean addAttendance(UUID courseID, UUID userID) {
+        Course course = courseRepository.findOne(courseID);
+        User user = userRepository.findOne(userID);
+        Attendance attendance = new Attendance(user, course, course.getLength());
+        attendanceRepository.save(attendance);
+        course.getUsers().add(user);
+        user.getCourses().add(course);
+        course.getAttendances().add(attendance);
+        user.getAttendances().add(attendance);
+        courseRepository.save(course);
+        userRepository.save(user);
         return true;
     }
 }
