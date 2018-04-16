@@ -25,7 +25,7 @@ public class Main implements ApplicationRunner {
     private UserRepository userRepository;
 
     @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
+    public void run(ApplicationArguments applicationArguments) {
         courseRepository.save(
                 new Course(
                         /*new UUID(0, 0),*/
