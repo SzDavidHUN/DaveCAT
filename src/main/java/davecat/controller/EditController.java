@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Controller
-public class editController {
+public class EditController {
 
     @Autowired
     private AttendanceService attendanceService;
