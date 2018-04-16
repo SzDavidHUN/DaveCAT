@@ -18,7 +18,7 @@ public class AttendanceService {
 
     public Collection<Attendance> getAllStudents(){
         Collection<Attendance> ret = new ArrayList<>();
-        attendanceRepository.findAll().forEach((attendance) -> ret.add(attendance));
+        attendanceRepository.findAll().forEach(ret::add);
         return ret;
     }
 
