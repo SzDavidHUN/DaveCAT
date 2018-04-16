@@ -105,7 +105,7 @@ public class CourseController {
         switch (mode){
             case "addUser":
                 commonService.addUserToCourse(userID, courseID);
-                commonService.addAttendance(courseID, userID, courseService.getCourseByID(courseID).getLength());
+                commonService.addAttendance(courseID, userID);
                 model.addAttribute("messageTitle", "Kurzus módosítása");
                 model.addAttribute("messageDescription", "Felhasználó hozzárendelés a kurzushoz");
                 model.addAttribute("messageType", "success");
