@@ -4,6 +4,7 @@ import davecat.modell.Attendance;
 import davecat.modell.Course;
 import davecat.modell.User;
 import davecat.service.AttendanceService;
+import davecat.service.CommonService;
 import davecat.service.CourseService;
 import davecat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class editController {
     @Autowired
     CourseService courseService;
     @Autowired
-    UserService userService;
+    private CommonService commonService;
 
 
     @RequestMapping("/edit")
