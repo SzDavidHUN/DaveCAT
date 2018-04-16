@@ -72,9 +72,17 @@ public class EditController {
         switch (mode) {
             case "add":
                 commonService.addAttendance(courseID, userID);
+                model.addAttribute("messageTitle", "Felhasználó hozzáadása");
+                model.addAttribute("messageDescription", "");
+                model.addAttribute("messageType", "success");
+                model.addAttribute("messageText", "Felhasználó sikeresen hozzáadva a kurzushoz, valamint a jelenléti ív is létre lett hozva.");
                 break;
             case "remove":
                 commonService.removeAttendance(attendanceService.getAttendance(courseID, userID));
+                model.addAttribute("messageTitle", "Felhasználó eltávolítása");
+                model.addAttribute("messageDescription", "");
+                model.addAttribute("messageType", "success");
+                model.addAttribute("messageText", "Felhasználó sikeresen eltávolítva a kurzusból, valamint a jelenléti ív is törlésre került.");
                 break;
             default:
                 break;
