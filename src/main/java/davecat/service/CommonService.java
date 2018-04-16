@@ -32,8 +32,12 @@ public class CommonService {
 
         if(course == null)
             System.out.println("NULL COURSE!");
-        if(user == null)
+            return false;
+        }
+        if (user == null) {
             System.out.println("NULL USER!");
+            return false;
+        }
 
         user.addCourse(course);
         course.addUser(user);
