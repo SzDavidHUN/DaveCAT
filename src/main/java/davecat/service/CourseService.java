@@ -2,9 +2,7 @@ package davecat.service;
 
 import davecat.modell.Course;
 import davecat.modell.User;
-import davecat.repository.AttendanceRepository;
 import davecat.repository.CourseRepository;
-import davecat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
