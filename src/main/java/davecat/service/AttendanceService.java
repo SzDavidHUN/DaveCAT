@@ -57,24 +57,4 @@ public class AttendanceService {
         throw new EntityNotFoundException();
     }
 
-    public boolean removeAttendance(UUID courseID, UUID userID) {
-        return removeAttendance(getAttendance(userID, courseID));
-    }
-
-    public boolean removeAttendance(UUID attendanceID) {
-        return removeAttendance(attendanceRepository.findOne(attendanceID));
-    }
-
-    public boolean removeAttendance(Attendance attendance) {
-        try {
-            attendance.getCourse().getUsers().remove(attendance.getUser());
-            attendance.getCourse().getAttendances().remove(attendance);
-            attendance.getUser().getCourses().remove(attendance.getCourse());
-            attendance.getUser().getAttendances().remove(attendance);
-        } catch (EntityNotFoundException e) {
-            return false;
-        }
-        return true;
-    }
-
 }
