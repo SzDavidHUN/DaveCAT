@@ -74,7 +74,7 @@ public class EditController {
                 commonService.addAttendance(courseID, userID);
                 break;
             case "remove":
-
+                commonService.removeAttendance(attendanceService.getAttendance(courseID, userID));
                 break;
             default:
                 break;

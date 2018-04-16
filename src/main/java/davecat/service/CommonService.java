@@ -64,4 +64,17 @@ public class CommonService {
         userRepository.save(user);
         return true;
     }
+
+    public void removeAttendance(Attendance attendance) {
+        User user = attendance.getUser();
+        Course course = attendance.getCourse();
+        user.getCourses().remove(course);
+        user.getAttendances().remove(attendance);
+        userRepository.save(user);
+        course.getUsers().remove(user);
+        course.getAttendances().remove(attendance);
+        courseRepository.save(course);
+        attendanceRepository.delete(attendance);
+
+    }
 }
