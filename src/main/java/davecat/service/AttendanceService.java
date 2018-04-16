@@ -33,7 +33,7 @@ public class AttendanceService {
         return ret;
     }
 
-    public Collection<Attendance> getAttendacesForUser(UUID userId){
+    public Collection<Attendance> getAttendancesForUser(UUID userId) {
         Collection<Attendance> ret = new ArrayList<>();
 
         for (Attendance attendance : attendanceRepository.findAll()
