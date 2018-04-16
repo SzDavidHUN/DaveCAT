@@ -84,7 +84,7 @@
                                         <a th:text="${attendance.getUser().getNeptun()}" />
                                     </td>
                                     <td>
-                                        <a th:href="@{'/editUser'(mode = 'add', id = ${attendance.getUser().getId()})}"><b>×</b></a>
+                                        <a th:href="@{'/modify'(mode = 'remove', userID = ${attendance.getUser().getId()}, courseID = ${attendance.getCourse().getId()})}"><b>×</b></a>
                                     </td>
                                 </div>
                                 <div th:case="'user'">
@@ -92,7 +92,7 @@
                                         <a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/course'(id=${attendance.getCourse().getId()})}"/>
                                     </td>
                                     <td>
-                                        <a th:href="@{'/editCourse'(mode = 'add', id = ${attendance.getCourse().getId()})}"><b>×</b></a>
+                                        <a th:href="@{'/modify'(mode = 'remove', courseID = ${attendance.getCourse().getId()},  userID = ${attendance.getUser().getId()})}"><b>×</b></a>
                                     </td>
                                 </div>
                             </tr>
@@ -138,7 +138,7 @@
                                             <a th:text="${user.getNeptun()}" />
                                         </td>
                                         <td>
-                                            <a th:href="@{'/edit'(mode='course', courseId = ${id}, userId = ${user.getId()})}"><b>+</b></a>
+                                            <a th:href="@{'/modify'(mode='add', courseID = ${id}, userID = ${user.getId()})}"><b>+</b></a>
                                         </td>
                                     </tr>
                                 </div>
@@ -151,7 +151,7 @@
                                             <a th:text="${course.getLocation()}" />
                                         </td>
                                         <td>
-                                            <a th:href="@{'/edit'(mode='course', courseId = ${course.getId()}, userId = ${id})}"><b>+</b></a>
+                                            <a th:href="@{'/modify'(mode='add', courseID = ${course.getId()}, userID = ${id})}"><b>+</b></a>
                                         </td>
                                     </tr>
                                 </div>
