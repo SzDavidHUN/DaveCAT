@@ -16,15 +16,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Collection<User> getAllUsers(){
+    public Collection<User> getAllUsers() {
         Collection<User> ret = new ArrayList<>();
         userRepository.findAll().forEach(ret::add);
         return ret;
     }
 
-    public User getUserByID(UUID id){
+    public User getUserByID(UUID id) {
         User user = userRepository.findOne(id);
-        if (user !=null) return user;
+        if (user != null) return user;
         return new User(
                 "User not found",
                 "-404--",

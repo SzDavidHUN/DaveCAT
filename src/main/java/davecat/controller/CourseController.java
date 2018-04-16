@@ -36,10 +36,10 @@ public class CourseController {
     }
 
     @RequestMapping("/course")
-    public String getCourse(@RequestParam(name = "id", required = true) String id, Model model){
+    public String getCourse(@RequestParam(name = "id", required = true) String id, Model model) {
         //Course course = courseService.getUserByID(UUID.fromString(id));
         Course course = courseService.getCourseByID(UUID.fromString(id));
-        model.addAttribute("courseTitle",course.getTitle());
+        model.addAttribute("courseTitle", course.getTitle());
         model.addAttribute("courseTime", course.getTime());
         model.addAttribute("coursePlace", course.getLocation());
         model.addAttribute("courseDescription", course.getDescription());
@@ -49,7 +49,7 @@ public class CourseController {
     }
 
     @RequestMapping(value = "/addCourse", method = RequestMethod.GET)
-    public String addCourse(Model model){
+    public String addCourse(Model model) {
         model.addAttribute("messageBox", false);
         model.addAttribute("message", "");
         System.out.println("GET");
@@ -64,7 +64,7 @@ public class CourseController {
             @RequestParam(name = "courseLocation", required = true) String courseLocation,
             @RequestParam(name = "courseTime", required = true) String courseTime,
             @RequestParam(name = "courseLength", required = true) String courseLength
-    ){
+    ) {
         courseRepository.save(
                 new Course(
                         courseTitle,
@@ -86,7 +86,7 @@ public class CourseController {
     public String editParticipants(
             Model model,
             @RequestParam(value = "id", required = true) UUID id
-    ){
+    ) {
         model.addAttribute("courseID", id);
         model.addAttribute("currentUsers", courseService.getStudentsForCourse(id));
         model.addAttribute("allUsers", userService.getAllUsers());
@@ -100,9 +100,9 @@ public class CourseController {
             @RequestParam(value = "mode", required = true) String mode,
             @RequestParam(value = "courseID", required = true) UUID courseID,
             @RequestParam(value = "userID", required = true) UUID userID
-    ){
+    ) {
 
-        switch (mode){
+        switch (mode) {
             case "addUser":
                 commonService.addUserToCourse(userID, courseID);
                 commonService.addAttendance(courseID, userID);

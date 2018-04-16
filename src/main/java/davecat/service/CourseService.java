@@ -19,15 +19,15 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public Collection<Course> getAllCourses(){
+    public Collection<Course> getAllCourses() {
         Collection<Course> ret = new ArrayList<>();
         courseRepository.findAll().forEach(ret::add);
         return ret;
     }
 
-    public Course getCourseByID(UUID id){
+    public Course getCourseByID(UUID id) {
         Course course = courseRepository.findOne(id);
-        if (course!=null) return course;
+        if (course != null) return course;
         return new Course(
                 /*new UUID(0,0),*/
                 "Error: Class Not Found",
@@ -38,7 +38,7 @@ public class CourseService {
         );
     }
 
-    public Set<User> getStudentsForCourse(UUID id){
+    public Set<User> getStudentsForCourse(UUID id) {
         return courseRepository.findOne(id).getUsers();
     }
 

@@ -16,7 +16,8 @@ public class Course {
     private String time;
     private int length;
 
-    protected Course(){}
+    protected Course() {
+    }
 
     @ManyToMany(targetEntity = Attendance.class)
     private Set<Attendance> attendaces;
@@ -74,7 +75,7 @@ public class Course {
 
     //MODIFIERS
 
-    public void addUser(User user){
+    public void addUser(User user) {
         users.add(user);
     }
 }

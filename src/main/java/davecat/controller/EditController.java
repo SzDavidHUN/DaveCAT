@@ -33,12 +33,11 @@ public class EditController {
     @RequestMapping("/edit")
     public String edit(Model model,
                        @RequestParam(name = "type", required = true) String type,
-                       @RequestParam(name = "id",required = true) UUID id)
-    {
+                       @RequestParam(name = "id", required = true) UUID id) {
         Collection<Attendance> attendances;
         Collection<Course> courses;
         Collection<User> users;
-        switch (type){
+        switch (type) {
             case "course":
                 attendances = attendanceService.getAttendacesForClass(id);
                 users = userService.getAllUsers();

@@ -21,16 +21,16 @@ public class CommonService {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    public boolean addCourseToUser(UUID courseID, UUID userID){
+    public boolean addCourseToUser(UUID courseID, UUID userID) {
         return addUserToCourse(userID, courseID);
     }
 
-    public boolean addUserToCourse(UUID userID, UUID courseID){
+    public boolean addUserToCourse(UUID userID, UUID courseID) {
 
         Course course = courseRepository.findOne(courseID);
         User user = userRepository.findOne(userID);
 
-        if(course == null)
+        if (course == null) {
             System.out.println("NULL COURSE!");
             return false;
         }

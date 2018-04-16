@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/users")
-    public String users(Model model){
+    public String users(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
@@ -29,8 +29,8 @@ public class UserController {
     @RequestMapping(value = "/user")
     public String user(
             Model model,
-            @RequestParam(name = "id", required = true)UUID id
-            ){
+            @RequestParam(name = "id", required = true) UUID id
+    ) {
         model.addAttribute("user", userService.getUserByID(id));
         model.addAttribute("userId", id);
 
@@ -40,7 +40,7 @@ public class UserController {
     @RequestMapping(value = "/reg", method = RequestMethod.GET)
     public String registerUser(
             Model model
-    ){
+    ) {
 
         return "reg";
     }
@@ -48,11 +48,11 @@ public class UserController {
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     public String registerUserForReal(
             Model model,
-            @RequestParam(name="userName", required = true) String userName,
-            @RequestParam(name="userNeptun", required = true) String userNeptun,
-            @RequestParam(name="userEmail", required = true) String userEmail,
-            @RequestParam(name="userPassword", required = true) String userPassword
-    ){
+            @RequestParam(name = "userName", required = true) String userName,
+            @RequestParam(name = "userNeptun", required = true) String userNeptun,
+            @RequestParam(name = "userEmail", required = true) String userEmail,
+            @RequestParam(name = "userPassword", required = true) String userPassword
+    ) {
         userRepository.save(
                 new User(
                         userName,

@@ -17,7 +17,8 @@ public class Attendance {
     private ArrayList<Status> lessons;
     private int length;
 
-    protected Attendance(){}
+    protected Attendance() {
+    }
 
     enum Status {
         Present,
@@ -31,8 +32,8 @@ public class Attendance {
         lessons = new ArrayList<>(length);
     }
 
-    public boolean setLesson(Status status, int lesson){
-        if(lesson >= length || lesson < 0)
+    public boolean setLesson(Status status, int lesson) {
+        if (lesson >= length || lesson < 0)
             return false; //EXCEPTION kéne
         lessons.add(lesson, status);
         return true;
