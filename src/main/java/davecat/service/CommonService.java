@@ -15,11 +15,11 @@ import java.util.UUID;
 public class CommonService {
 
     @Autowired
-    CourseRepository courseRepository;
+    private CourseRepository courseRepository;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    AttendanceRepository attendanceRepository;
+    private AttendanceRepository attendanceRepository;
 
     public boolean addCourseToUser(UUID courseID, UUID userID){
         return addUserToCourse(userID, courseID);
