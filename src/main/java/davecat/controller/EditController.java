@@ -21,9 +21,11 @@ import java.util.UUID;
 public class editController {
 
     @Autowired
-    AttendanceService attendanceService;
+    private AttendanceService attendanceService;
     @Autowired
-    CourseService courseService;
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private CommonService commonService;
 
