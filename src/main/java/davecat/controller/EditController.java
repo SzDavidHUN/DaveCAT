@@ -42,7 +42,7 @@ public class editController {
                 courses = new ArrayList<>();
                 break;
             case "user":
-                attendances = attendanceService.getAttendacesForUser(id);
+                attendances = attendanceService.getAttendancesForUser(id);
                 courses = courseService.getAllCourses();
                 System.out.println(courses);
                 users = new ArrayList<>();
