@@ -62,7 +62,7 @@ public class Course {
         return length;
     }
 
-    public Set<Attendance> getAttendaces() {
+    public Set<Attendance> getAttendances() {
         return attendaces;
     }
 
