@@ -62,4 +62,23 @@ public class editController {
         return "edit";
     }
 
+    @RequestMapping("/modify")
+    public String modify(Model model,
+                         @RequestParam(name = "mode", required = true) String mode,
+                         @RequestParam(name = "courseID", required = true) UUID courseID,
+                         @RequestParam(name = "userID", required = true) UUID userID) {
+        switch (mode) {
+            case "add":
+                commonService.addAttendance(courseID, userID);
+                break;
+            case "remove":
+
+                break;
+            default:
+                break;
+        }
+
+        return "message";
+    }
+
 }
