@@ -42,12 +42,14 @@ public class EditController {
                 attendances = attendanceService.getAttendacesForClass(id);
                 users = userService.getAllUsers();
                 courses = new ArrayList<>();
+                model.addAttribute("title", courseService.getCourseByID(id).getTitle());
                 break;
             case "user":
                 attendances = attendanceService.getAttendancesForUser(id);
                 courses = courseService.getAllCourses();
                 System.out.println(courses);
                 users = new ArrayList<>();
+                model.addAttribute("title", userService.getUserByID(id).getName());
                 break;
             default:
                 attendances = new ArrayList<>();
