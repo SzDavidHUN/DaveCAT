@@ -49,7 +49,7 @@
         <div class="col-sm-9">
             <div th:class="'alert alert-' + ${messageType}" th:text="${messageText}">
             </div>
-            <a class="btn btn-primary" href="javascript:window.history.back();">Vissza</a>
+            <a class="btn btn-primary" href="javascript:window.location = document.referrer;">Vissza</a>
         </div>
         <div class="col-sm-3">
 
