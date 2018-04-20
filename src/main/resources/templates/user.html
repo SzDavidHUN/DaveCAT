@@ -65,10 +65,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="course : ${user.getCourses()}">
-                                    <td><a th:text="${course.getTitle()}" th:href="@{'/course'(id = ${course.getId()})}"/></td>
-                                    <td th:text="${course.getTime()}" />
-                                    <td th:text="${course.getLocation()}" />
+                                <tr th:each="attendance : ${user.getAttendances()}">
+                                    <td><a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/editAttendance'(id = ${attendance.getId()})}"/></td>
+                                    <td th:text="${attendance.getCourse().getTime()}" />
+                                    <td th:text="${attendance.getCourse().getLocation()}" />
                                 </tr>
                             </tbody>
                         </table>

@@ -65,7 +65,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="attendance : ${attendances}">
-                                <td><a th:text="${attendance.getUser().getName()}" th:href="@{'/user'(id = ${attendance.getUser().getId()})}" /></td>
+                                <td><a th:text="${attendance.getUser().getName()}" th:href="@{'/editAttendance'(id = ${attendance.getId()})}" /></td>
                                 <td th:text="${attendance.getUser().getNeptun()}" />
                             </tr>
                             </tbody>
