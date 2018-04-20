@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.DayOfWeek;
 import java.util.UUID;
 
 @Controller
@@ -35,7 +36,7 @@ public class CourseController {
         return "courses";
     }
 
-    @RequestMapping("/course")
+    @RequestMapping(value = "/course", method = RequestMethod.GET) //TODO: MINDENHOL REQUESTMETHOD
     public String getCourse(@RequestParam(name = "id", required = true) String id, Model model) {
         //Course course = courseService.getUserByID(UUID.fromString(id));
         Course course = courseService.getCourseByID(UUID.fromString(id));
@@ -45,6 +46,9 @@ public class CourseController {
         model.addAttribute("courseDescription", course.getDescription());
         model.addAttribute("courseId", course.getId());
         model.addAttribute("attendances", attendanceService.getAttendacesForClass(UUID.fromString(id)));
+        model.addAttribute("courseDay", course.getDayString());
+        model.addAttribute("courseBegin", course.getBegin());
+        model.addAttribute("courseEnd", course.getEnd());
         return "course";
     }
 
@@ -63,7 +67,10 @@ public class CourseController {
             @RequestParam(name = "courseDescription", required = true) String courseDescription,
             @RequestParam(name = "courseLocation", required = true) String courseLocation,
             @RequestParam(name = "courseTime", required = true) String courseTime,
-            @RequestParam(name = "courseLength", required = true) String courseLength
+            @RequestParam(name = "courseLength", required = true) String courseLength,
+            @RequestParam(name = "courseDay", required = true) DayOfWeek courseDay,
+            @RequestParam(name = "courseBegin", required = true) Integer courseBegin,
+            @RequestParam(name = "courseEnd", required = true) Integer courseEnd
     ) {
         courseRepository.save(
                 new Course(
@@ -71,7 +78,10 @@ public class CourseController {
                         courseDescription,
                         courseLocation,
                         courseTime,
-                        Integer.parseInt(courseLength)
+                        Integer.parseInt(courseLength),
+                        courseDay,
+                        courseBegin,
+                        courseEnd
                 )
         );
 

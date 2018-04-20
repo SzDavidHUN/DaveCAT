@@ -68,8 +68,42 @@
                 </div>
                 <div class="form-group">
                     <label for="courseLength">Alkalmak száma:
-                    <input type="number" class="form-control" id="courseLength" value="10" name="courseLength" /></label>
+                    <input type="number" class="form-control form-control-range" id="courseLength" value="10" name="courseLength" /></label>
                 </div>
+                <label>Időpont</label>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Kezdés: </div>
+                        </div>
+                        <input type="number" class="form-control form-control-range" id="courseBegin" value="10" name="courseBegin" min="0" max="23" />
+                    </div>
+                    &nbsp;
+                    <div class="form-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Vége: </div>
+                        </div>
+                        <input type="number" class="form-control form-control-range" id="courseEnd" value="12" name="courseEnd" min="0" max="23" />
+                    </div>
+                    &nbsp;
+                    <div class="form-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Nap
+                            </div>
+                        </div>
+                        <select name="courseDay" id="courseDay" class="form-control">
+                            <option value="MONDAY">Hétfő</option>
+                            <option value="TUESDAY">Kedd</option>
+                            <option value="WEDNESDAY">Szerda</option>
+                            <option value="THURSDAY">Csütörtök</option>
+                            <option value="FRIDAY">Péntek</option>
+                            <option value="SATURDAY">Szombat</option>
+                            <option value="SUNDAY">Vasárnap</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
                 <button type="submit" class="btn btn-primary" formmethod="post">Kurzus felvitele</button>
             </form>
             <br />&nbsp;<br />&nbsp;

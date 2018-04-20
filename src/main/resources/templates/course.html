@@ -47,7 +47,7 @@
     <div class="row">
         <div class="col-sm-9">
             <p>
-                <b>Időpont: </b><span th:text="${courseTime}" /><br />
+                <b>Időpont: </b><span th:text="${courseDay} + ' ' + ${courseBegin} + '-' + ${courseEnd}" /><br />
                 <b>Hely: </b><span th:text="${coursePlace}" /><br />
                 <a th:text="${courseDescription}" />
             </p>

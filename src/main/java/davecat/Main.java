@@ -11,6 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.DayOfWeek;
+
 @SpringBootApplication
 @EnableJpaRepositories
 public class Main implements ApplicationRunner {
@@ -33,7 +35,10 @@ public class Main implements ApplicationRunner {
                         "Oprációs Rendszerek című tárgy gyakorlata, első csoport, Csütörtök 10-12",
                         "IN/102",
                         "Szerda 10-12",
-                        14
+                        14,
+                        DayOfWeek.WEDNESDAY,
+                        10,
+                        12
                 )
         );
         courseRepository.save(
@@ -43,6 +48,9 @@ public class Main implements ApplicationRunner {
                         "A tárgy gyakorlata, amelyen főképp a Linux alap rendszerekkel és hozzájuk kapcsolódó technológiákkal ismerkedhetünk meg",
                         "IN/103",
                         "Csütörtök 12-14",
+                        14,
+                        DayOfWeek.THURSDAY,
+                        12,
                         14
                 )
         );
@@ -53,7 +61,10 @@ public class Main implements ApplicationRunner {
                         "Lorem ipszum",
                         "/dev/null",
                         "Hétfőn 11 órakor",
-                        14
+                        14,
+                        DayOfWeek.MONDAY,
+                        11,
+                        12
                 )
         );
 

@@ -6,6 +6,7 @@ import davecat.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -32,12 +33,19 @@ public class CourseService {
                 "The specified class couldn't be found. This is a placeholder while I creat an exception.",
                 "Nowhere",
                 "Never",
-                0
+                0,
+                DayOfWeek.FRIDAY,
+                0,
+                23
         );
     }
 
     public Set<User> getStudentsForCourse(UUID id) {
         return courseRepository.findOne(id).getUsers();
+    }
+
+    public String getDueString() {
+        return null;
     }
 
 }
