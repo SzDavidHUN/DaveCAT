@@ -103,7 +103,7 @@ public class User {
 
     //MODIFIERS
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         //addCourse(course.getId());
         courses.add(course);
     }

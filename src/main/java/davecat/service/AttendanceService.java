@@ -61,7 +61,7 @@ public class AttendanceService {
         return attendanceRepository.findOne(attendanceID);
     }
 
-    public void setLesson(UUID attendanceID, int lesson, Attendance.Status status){
+    public void setLesson(UUID attendanceID, int lesson, Attendance.Status status) {
         Attendance attendance = attendanceRepository.findOne(attendanceID);
         ArrayList<Attendance.Status> lessons = attendance.getLessons();
         lessons.set(lesson, status);
