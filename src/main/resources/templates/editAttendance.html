@@ -40,7 +40,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1 class="display-3">Jelenlét szerkesztése</h1>
+        <h1 class="display-3">Jelenlét</h1>
         <p>
             <a th:text="${attendance.getUser().getName()}" th:href="@{'/user'(id = ${attendance.getUser().getId()})}" />
             <br />
@@ -51,7 +51,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-            <table class="table table-bordered table-light table-striped">
+            <table class="table table-bordered table-light text-center">
                 <thead>
                     <th:block th:each="lesson, iter : ${attendance.getLessons()}">
                         <th th:text="${iter.index + 1} + '.'" />
@@ -62,19 +62,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th:block th:each="lesson, iter : ${attendance.getLessons()}">
-                            <th:block th:switch="${lesson.name()}">
-                                <td th:case="'EMPTY'">&nbsp;</td>
-                                <td th:case="'PRESENT'">+</td>
-                                <td th:case="'AWAY'">-</td>
-                            </th:block>
-                        </th:block>
+                        <td th:each="lesson : ${attendance.getLessons()}" th:utext="${lesson.toString()}"/>
                         <td th:text="${present}" />
                         <td th:text="${away}" />
                         <td th:text="${away + present} + ' (' + ${attendance.getLength()} + ')'" />
                     </tr>
                 </tbody>
             </table>
+            <br />
             <h3>Jelenlét szerkesztése</h3>
             <form action="/setAttendance">
                 <table>

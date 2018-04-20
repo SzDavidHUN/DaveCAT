@@ -27,9 +27,24 @@ public class Attendance {
     }
 
     public enum Status {
-        EMPTY,
-        PRESENT,
-        AWAY
+        EMPTY {
+            @Override
+            public String toString() { //TODO: STRING ENUM
+                return " ";
+            }
+        },
+        PRESENT {
+            @Override
+            public String toString() {
+                return "+";
+            }
+        },
+        AWAY {
+            @Override
+            public String toString() {
+                return "-";
+            }
+        }
     }
 
     public Attendance(User user, Course course, int length) {
