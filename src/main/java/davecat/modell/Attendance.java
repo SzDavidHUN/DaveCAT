@@ -26,9 +26,10 @@ public class Attendance {
         init();
     }
 
-    enum Status {
-        Present,
-        Away
+    public enum Status {
+        EMPTY,
+        PRESENT,
+        AWAY
     }
 
     public Attendance(User user, Course course, int length) {
