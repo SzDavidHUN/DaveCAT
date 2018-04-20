@@ -23,6 +23,7 @@ public class Attendance {
     private int length;
 
     protected Attendance() {
+        init();
     }
 
     enum Status {
@@ -34,7 +35,14 @@ public class Attendance {
         this.user = user;
         this.course = course;
         this.length = length;
+        init();
+    }
+
+    private void init(){
         lessons = new ArrayList<>(length);
+        for(int i = 0; i < length; i++){
+            lessons.add(i, Status.EMPTY);
+        }
     }
 
     public boolean setLesson(Status status, int lesson) {
