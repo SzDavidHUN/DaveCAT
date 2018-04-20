@@ -29,13 +29,21 @@ public class Course {
     @ManyToMany(targetEntity = User.class)
     private Set<User> users;
 
-    public Course(String title, String description, String location, String time, int length) {
+    protected Course() {
+        init();
+    }
+
+    public Course(String title, String description, String location, String time, int length, DayOfWeek day, Integer begin, Integer end) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.time = time;
         this.length = length;
 
+        init();
+    }
+
+    public void init() {
         attendaces = new HashSet<>();
         users = new HashSet<>();
     }

@@ -28,7 +28,9 @@ public class User {
     @OneToMany(targetEntity = Attendance.class)
     private Set<Attendance> attendances;
 
-    protected User(){}
+    protected User() {
+        init();
+    }
 
     public User(String name, String neptun, String email, String password, Role role) {
         this.name = name;
@@ -37,6 +39,10 @@ public class User {
         this.password = password;
         this.role = role;
 
+        init();
+    }
+
+    private void init(){
         courses = new HashSet<>();
         attendances = new HashSet<>();
     }

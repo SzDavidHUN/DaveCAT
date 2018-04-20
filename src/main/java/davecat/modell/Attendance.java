@@ -54,9 +54,9 @@ public class Attendance {
         init();
     }
 
-    private void init(){
+    private void init() {
         lessons = new ArrayList<>(length);
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             lessons.add(i, Status.EMPTY);
         }
     }
