@@ -42,7 +42,7 @@ public class User {
         init();
     }
 
-    private void init(){
+    private void init() {
         courses = new HashSet<>();
         attendances = new HashSet<>();
     }
