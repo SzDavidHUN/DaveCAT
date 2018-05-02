@@ -83,8 +83,7 @@ public class CourseController {
                         courseDay,
                         courseBegin,
                         courseEnd
-                )
-        );
+                ));
 
         model.addAttribute("messageBox", true);
         model.addAttribute("message", "Kurzus sikeresen hozzáadva!");
