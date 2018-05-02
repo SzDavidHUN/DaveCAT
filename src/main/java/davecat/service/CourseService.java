@@ -1,5 +1,6 @@
 package davecat.service;
 
+import davecat.exceptions.CourseNotEmptyException;
 import davecat.modell.Course;
 import davecat.modell.User;
 import davecat.repository.CourseRepository;
@@ -50,6 +51,18 @@ public class CourseService {
 
     public void saveCourse(Course course) {
         courseRepository.save(course);
+    }
+
+    public boolean isCourseEmpty(UUID courseID) {
+        return courseRepository.findOne(courseID).getUsers().isEmpty();
+    }
+
+    public void removeCourse(UUID courseID) throws CourseNotEmptyException {
+        if (isCourseEmpty(courseID)) {
+            courseRepository.delete(courseID);
+            return;
+        }
+        throw new CourseNotEmptyException("Course contains users, first delete users!");
     }
 
 }

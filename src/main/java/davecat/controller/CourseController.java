@@ -1,5 +1,6 @@
 package davecat.controller;
 
+import davecat.exceptions.CourseNotEmptyException;
 import davecat.modell.Course;
 import davecat.repository.CourseRepository;
 import davecat.service.AttendanceService;
@@ -90,6 +91,25 @@ public class CourseController {
         System.out.println("POST");
 
         return "addCourse";
+    }
+
+    @RequestMapping("/removeCourse")
+    public String removeCourse(
+            Model model,
+            @RequestParam(name = "courseID") UUID courseID
+    ) {
+        model.addAttribute("messageTitle", "Kurzus törlése");
+        model.addAttribute("messageDescription", "");
+        try {
+            courseService.removeCourse(courseID);
+            model.addAttribute("messageType", "success");
+            model.addAttribute("messageText", "A kurzus törlése sikeresen megtörtént!");
+        } catch (CourseNotEmptyException e) {
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("messageText", "Kurzus törlése sikertelen, mivel a kurzus még tartalmaz felhasználókat. Törlés előtt távolítsa el a felhasználókat a kurzusból!");
+        }
+
+        return "message";
     }
 
     @RequestMapping("/editParticipants")
