@@ -22,18 +22,18 @@ public class AttendanceService {
         return ret;
     }
 
-    public Collection<Attendance> getAttendacesForClass(UUID courseId) {
+    public Collection<Attendance> getAttendacesForClass(UUID courseID) {
         Collection<Attendance> ret = new ArrayList<>();
 
         for (Attendance attendance : attendanceRepository.findAll()
                 ) {
-            if (attendance.getCourse().getId().equals(courseId))
+            if (attendance.getCourse().getId().equals(courseID))
                 ret.add(attendance);
         }
         return ret;
     }
 
-    public Collection<Attendance> getAttendancesForUser(UUID userId) {
+    public Collection<Attendance> getAttendancesForUser(UUID userID) {
         Collection<Attendance> ret = new ArrayList<>();
 
         for (Attendance attendance : attendanceRepository.findAll()

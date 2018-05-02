@@ -44,7 +44,7 @@ public class CourseController {
         model.addAttribute("courseTime", course.getTime());
         model.addAttribute("coursePlace", course.getLocation());
         model.addAttribute("courseDescription", course.getDescription());
-        model.addAttribute("courseId", course.getId());
+        model.addAttribute("courseID", course.getId());
         model.addAttribute("attendances", attendanceService.getAttendacesForClass(UUID.fromString(id)));
         model.addAttribute("courseDay", course.getDayString());
         model.addAttribute("courseBegin", course.getBegin());

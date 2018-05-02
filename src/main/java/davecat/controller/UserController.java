@@ -32,7 +32,7 @@ public class UserController {
             @RequestParam(name = "id", required = true) UUID id
     ) {
         model.addAttribute("user", userService.getUserByID(id));
-        model.addAttribute("userId", id);
+        model.addAttribute("userID", id);
 
         return "user";
     }

@@ -73,9 +73,8 @@
                     </div>
                 </div>
             </div>
-            <!-- /*<a class="btn btn-warning" th:href="'editParticipants?id=' + ${courseId}">Résztvevők szerkesztése</a>*/-->
-            <a class="btn btn-warning" th:href="@{'/edit'(type = 'course', id = ${courseId})}">Résztvevők szerkesztése</a>
-            <a class="btn btn-danger" th:href="'removeCourse?id=' + ${courseId}">Kurzus törlése</a>
+            <a class="btn btn-warning" th:href="@{'/edit'(type = 'course', id = ${courseID})}">Résztvevők szerkesztése</a>
+            <a class="btn btn-danger" th:href="@{'/removeCourse'(courseID = ${courseID})}">Kurzus törlése</a>
         </div>
         <div class="col-sm-3">
 
