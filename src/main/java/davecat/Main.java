@@ -28,6 +28,10 @@ public class Main implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) {
+
+    }
+
+    private void initDB(){
         courseRepository.save(
                 new Course(
                         /*new UUID(0, 0),*/
