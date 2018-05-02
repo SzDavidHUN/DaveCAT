@@ -48,4 +48,8 @@ public class CourseService {
         return null;
     }
 
+    public void saveCourse(Course course) {
+        courseRepository.save(course);
+    }
+
 }

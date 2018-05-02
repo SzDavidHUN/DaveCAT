@@ -72,7 +72,7 @@ public class CourseController {
             @RequestParam(name = "courseBegin", required = true) Integer courseBegin,
             @RequestParam(name = "courseEnd", required = true) Integer courseEnd
     ) {
-        courseRepository.save(
+        courseService.saveCourse(
                 new Course(
                         courseTitle,
                         courseDescription,
