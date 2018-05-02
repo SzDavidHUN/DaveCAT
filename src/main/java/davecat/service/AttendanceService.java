@@ -38,7 +38,7 @@ public class AttendanceService {
 
         for (Attendance attendance : attendanceRepository.findAll()
                 ) {
-            if (attendance.getUser().getId().equals(userId))
+            if (attendance.getUser().getId().equals(userID))
                 ret.add(attendance);
         }
         return ret;
