@@ -27,23 +27,19 @@ public class Attendance {
     }
 
     public enum Status {
-        EMPTY {
-            @Override
-            public String toString() { //TODO: STRING ENUM
-                return " ";
-            }
-        },
-        PRESENT {
-            @Override
-            public String toString() {
-                return "+";
-            }
-        },
-        AWAY {
-            @Override
-            public String toString() {
-                return "-";
-            }
+        EMPTY(" "),
+        PRESENT("+"),
+        AWAY("-");
+
+        private String render;
+
+        Status(String render) {
+            this.render = render;
+        }
+
+        @Override
+        public String toString() {
+            return render;
         }
     }
 
