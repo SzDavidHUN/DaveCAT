@@ -51,7 +51,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-            <table class="table table-bordered table-light text-center">
+            <table class="table table-bordered table-light text-center table-bordered">
                 <thead>
                     <th:block th:each="lesson, iter : ${attendance.getLessons()}">
                         <th th:text="${iter.index + 1} + '.'" />

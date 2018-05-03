@@ -61,7 +61,7 @@
                 </div>
                 <div class="card-body">
                     <div class="card-text">
-                        <table class="table table-hover">
+                        <table class="table table-hover table-striped table-bordered">
                             <thead>
                                 <div th:switch="${type}">
                                     <div th:case="'course'">
@@ -78,10 +78,10 @@
                             <tbody>
                             <tr th:each="attendance : ${attendances}" th:switch="${type}">
                                 <div th:case="'course'">
-                                    <td >
+                                    <td style="vertical-align: middle;">
                                         <a th:text="${attendance.getUser().getName()}" th:href="@{'/user'(id = ${attendance.getUser().getId()})}" />
                                     </td>
-                                    <td >
+                                    <td style="vertical-align: middle;">
                                         <a th:text="${attendance.getUser().getNeptun()}" />
                                     </td>
                                     <td style="vertical-align: middle;">
@@ -118,7 +118,7 @@
                 </div>
                 <div class="card-body">
                     <div class="card-text">
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped table-bordered">
                             <thead>
                                 <div th:switch="${type}">
                                     <div th:case="'course'">
@@ -136,10 +136,10 @@
                             <tbody th:switch="${type}">
                                 <div th:case="'course'">
                                     <tr th:each="user : ${users}">
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <a th:href="@{'/user'(id = ${user.getId()})}" th:text="${user.getName()}" />
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <a th:text="${user.getNeptun()}" />
                                         </td>
                                         <td style="vertical-align: middle;">
@@ -151,10 +151,10 @@
                                 </div>
                                 <div th:case="'user'">
                                     <tr th:each="course : ${courses}">
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <a th:href="@{'/course'(id = ${course.getId()})}" th:text="${course.getTitle()}" />
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                             <a th:text="${course.getLocation()}" />
                                         </td>
                                         <td style="vertical-align: middle;">
