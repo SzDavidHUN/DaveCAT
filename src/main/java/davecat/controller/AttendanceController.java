@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
@@ -16,7 +17,7 @@ public class AttendanceController {
     @Autowired
     AttendanceService attendanceService;
 
-    @RequestMapping("/editAttendance")
+    @RequestMapping(value = "/editAttendance", method = RequestMethod.GET)
     public String editAttendance(
             Model model,
             @RequestParam(value = "id") UUID id
@@ -49,7 +50,7 @@ public class AttendanceController {
         return "editAttendance";
     }
 
-    @RequestMapping("/setAttendance")
+    @RequestMapping(value = "/setAttendance", method = RequestMethod.GET)
     public String setAttendance(
             Model model,
             @RequestParam(name = "id") UUID id,

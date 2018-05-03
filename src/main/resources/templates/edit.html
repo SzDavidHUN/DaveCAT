@@ -84,16 +84,20 @@
                                     <td >
                                         <a th:text="${attendance.getUser().getNeptun()}" />
                                     </td>
-                                    <td>
-                                        <a th:href="@{'/modify'(mode = 'remove', userID = ${attendance.getUser().getId()}, courseID = ${attendance.getCourse().getId()})}"><b>×</b></a>
+                                    <td style="vertical-align: middle;">
+                                        <form th:action="@{'/modify'(mode = 'remove', userID = ${attendance.getUser().getId()}, courseID = ${attendance.getCourse().getId()})}" method="post">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">×</button>
+                                        </form>
                                     </td>
                                 </div>
                                 <div th:case="'user'">
-                                    <td>
+                                    <td style="vertical-align: middle;">
                                         <a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/course'(id=${attendance.getCourse().getId()})}"/>
                                     </td>
-                                    <td>
-                                        <a th:href="@{'/modify'(mode = 'remove', courseID = ${attendance.getCourse().getId()},  userID = ${attendance.getUser().getId()})}"><b>×</b></a>
+                                    <td style="vertical-align: middle;">
+                                        <form th:action="@{'/modify'(mode = 'remove', courseID = ${attendance.getCourse().getId()},  userID = ${attendance.getUser().getId()})}" method="post">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">×</button>
+                                        </form>
                                     </td>
                                 </div>
                             </tr>
@@ -138,8 +142,10 @@
                                         <td>
                                             <a th:text="${user.getNeptun()}" />
                                         </td>
-                                        <td>
-                                            <a th:href="@{'/modify'(mode='add', courseID = ${id}, userID = ${user.getId()})}"><b>+</b></a>
+                                        <td style="vertical-align: middle;">
+                                            <form th:action="@{'/modify'(mode='add', courseID = ${id}, userID = ${user.getId()})}" method="post">
+                                                <button type="submit" class="btn btn-outline-success btn-sm">+</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </div>
@@ -151,8 +157,10 @@
                                         <td>
                                             <a th:text="${course.getLocation()}" />
                                         </td>
-                                        <td>
-                                            <a th:href="@{'/modify'(mode='add', courseID = ${course.getId()}, userID = ${id})}"><b>+</b></a>
+                                        <td style="vertical-align: middle;">
+                                            <form th:action="@{'/modify'(mode='add', courseID = ${course.getId()}, userID = ${id})}" method="post">
+                                                <button type="submit" class="btn btn-outline-success btn-sm">+</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </div>

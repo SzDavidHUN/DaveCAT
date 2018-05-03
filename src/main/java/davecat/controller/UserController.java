@@ -20,13 +20,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
-    @RequestMapping(value = "/user")
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String user(
             Model model,
             @RequestParam(name = "id", required = true) UUID id

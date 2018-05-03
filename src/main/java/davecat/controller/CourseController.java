@@ -31,7 +31,7 @@ public class CourseController {
     @Autowired
     private AttendanceService attendanceService;
 
-    @RequestMapping("/courses")
+    @RequestMapping(value = "/courses", method = RequestMethod.GET)
     public String listCourses(Model model) {
         model.addAttribute("courses", courseService.getAllCourses());
         return "courses";
@@ -92,7 +92,7 @@ public class CourseController {
         return "addCourse";
     }
 
-    @RequestMapping("/removeCourse")
+    @RequestMapping(value = "/removeCourse", method = RequestMethod.POST)
     public String removeCourse(
             Model model,
             @RequestParam(name = "courseID") UUID courseID
@@ -111,7 +111,7 @@ public class CourseController {
         return "message";
     }
 
-    @RequestMapping("/editParticipants")
+    @RequestMapping(value = "/editParticipants", method = RequestMethod.GET)
     public String editParticipants(
             Model model,
             @RequestParam(value = "id", required = true) UUID id
@@ -123,8 +123,8 @@ public class CourseController {
         return "editParticipants";
     }
 
-    @RequestMapping("/editCourse")
-    public String editCourse(
+    @RequestMapping(value = "/editCourse", method = RequestMethod.POST)
+    public String editCourse( //TODO: RENDUNDANCI/HIBÁS CLASS
             Model model,
             @RequestParam(value = "mode", required = true) String mode,
             @RequestParam(value = "courseID", required = true) UUID courseID,

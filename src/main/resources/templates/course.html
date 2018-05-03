@@ -74,7 +74,9 @@
                 </div>
             </div>
             <a class="btn btn-warning" th:href="@{'/edit'(type = 'course', id = ${courseID})}">Résztvevők szerkesztése</a>
-            <a class="btn btn-danger" th:href="@{'/removeCourse'(courseID = ${courseID})}">Kurzus törlése</a>
+            <form th:action="@{'/removeCourse'(courseID = ${courseID})}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Kurzus törlése</button>
+            </form>
         </div>
         <div class="col-sm-3">
 
