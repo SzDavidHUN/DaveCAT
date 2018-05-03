@@ -1,7 +1,5 @@
 package davecat.controller;
 
-import davecat.modell.User;
-import davecat.repository.UserRepository;
 import davecat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +13,6 @@ import java.util.UUID;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private UserService userService;
 
@@ -53,15 +49,7 @@ public class UserController {
             @RequestParam(name = "userEmail") String userEmail,
             @RequestParam(name = "userPassword") String userPassword
     ) {
-        userRepository.save(
-                new User(
-                        userName,
-                        userNeptun,
-                        userEmail,
-                        userPassword,
-                        User.Role.STUDENT
-                )
-        );
+        userService.saveUser(userName, userNeptun, userEmail, userPassword);
 
         model.addAttribute("messageTitle", "Regisztráció");
         model.addAttribute("messageDescription", "Új felhasználó regisztrálása");

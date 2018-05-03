@@ -32,4 +32,19 @@ public class UserService {
                 User.Role.GUEST
         );
     }
+
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
+
+    public void saveUser(String userName, String userNeptun, String userEmail, String userPassword){
+        User user = new User(
+                        userName,
+                        userNeptun,
+                        userEmail,
+                        userPassword,
+                        User.Role.STUDENT
+                );
+        userRepository.save(user);
+    }
 }
