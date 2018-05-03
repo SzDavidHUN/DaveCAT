@@ -63,6 +63,11 @@ public class UserController {
                 )
         );
 
-        return "reg";
+        model.addAttribute("messageTitle", "Regisztráció");
+        model.addAttribute("messageDescription", "Új felhasználó regisztrálása");
+        model.addAttribute("messageType", "success");
+        model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
+
+        return "message";
     }
 }
