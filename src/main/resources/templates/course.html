@@ -45,7 +45,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <p>
                 <b>Időpont: </b><span th:text="${courseDay} + ' ' + ${courseBegin} + '-' + ${courseEnd}" /><br />
                 <b>Hely: </b><span th:text="${coursePlace}" /><br />
@@ -62,11 +62,17 @@
                             <thead>
                             <th>Név</th>
                             <th>Neptun</th>
+                            <th:block th:each="week : ${#numbers.sequence(1, courseLength)}">
+                                <th th:text="${week}" class="text-center" />
+                            </th:block>
                             </thead>
                             <tbody>
                             <tr th:each="attendance : ${attendances}">
                                 <td><a th:text="${attendance.getUser().getName()}" th:href="@{'/editAttendance'(id = ${attendance.getId()})}" /></td>
                                 <td th:text="${attendance.getUser().getNeptun()}" />
+                                <th:block th:each="lesson : ${attendance.getLessons()}">
+                                    <td th:text="${lesson.toString()}" class="text-center" />
+                                </th:block>
                             </tr>
                             </tbody>
                         </table>
@@ -77,9 +83,6 @@
             <form th:action="@{'/removeCourse'(courseID = ${courseID})}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-danger">Kurzus törlése</button>
             </form>
-        </div>
-        <div class="col-sm-3">
-
         </div>
     </div>
 </div>

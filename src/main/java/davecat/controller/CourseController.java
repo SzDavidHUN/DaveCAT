@@ -50,6 +50,7 @@ public class CourseController {
         model.addAttribute("courseDay", course.getDayString());
         model.addAttribute("courseBegin", course.getBegin());
         model.addAttribute("courseEnd", course.getEnd());
+        model.addAttribute("courseLength", course.getLength());
         return "course";
     }
 
