@@ -31,7 +31,7 @@ public class Attendance {
         PRESENT("+"),
         AWAY("-");
 
-        private String render;
+        private final String render;
 
         Status(String render) {
             this.render = render;
