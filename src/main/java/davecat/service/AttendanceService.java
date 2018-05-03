@@ -46,7 +46,6 @@ public class AttendanceService {
 
     public Attendance getAttendance(UUID courseID, UUID userID) throws EntityNotFoundException {
         Attendance attendance;
-        boolean found = false;
         for (Attendance i : attendanceRepository.findAll()
                 ) {
             if (i.getUser().getId().equals(userID) && i.getCourse().getId().equals(courseID)) {
@@ -58,12 +57,9 @@ public class AttendanceService {
     }
 
     public boolean existAttendance(UUID courseID, UUID userID){
-        Attendance attendance;
-        boolean found = false;
         for (Attendance i : attendanceRepository.findAll()
                 ) {
             if (i.getUser().getId().equals(userID) && i.getCourse().getId().equals(courseID)) {
-                attendance = i;
                 return true;
             }
         }
