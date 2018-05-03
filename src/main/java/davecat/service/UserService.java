@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,8 +23,8 @@ public class UserService {
     }
 
     public User getUserByID(UUID id) {
-        User user = userRepository.findOne(id);
-        if (user != null) return user;
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) return user.get();
         return new User(
                 "User not found",
                 "-404--",

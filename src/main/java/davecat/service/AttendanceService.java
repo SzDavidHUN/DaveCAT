@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -66,14 +67,16 @@ public class AttendanceService {
         return false;
     }
 
-    public Attendance getAttendance(UUID attendanceID) throws EntityNotFoundException {
-        return attendanceRepository.findOne(attendanceID);
+    public Optional<Attendance> getAttendance(UUID attendanceID) throws EntityNotFoundException {
+        return attendanceRepository.findById(attendanceID);
     }
 
     public void setLesson(UUID attendanceID, int lesson, Attendance.Status status) {
-        Attendance attendance = attendanceRepository.findOne(attendanceID);
-        ArrayList<Attendance.Status> lessons = attendance.getLessons();
+        Optional<Attendance> attendance = attendanceRepository.findById(attendanceID);
+        if(!attendance.isPresent())
+            throw new EntityNotFoundException("setLesson: attendanceID not found");
+        ArrayList<Attendance.Status> lessons = attendance.get().getLessons();
         lessons.set(lesson, status);
-        attendanceRepository.save(attendance);
+        attendanceRepository.save(attendance.get());
     }
 }

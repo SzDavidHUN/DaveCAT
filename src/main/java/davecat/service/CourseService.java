@@ -7,11 +7,9 @@ import davecat.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CourseService {
@@ -26,8 +24,8 @@ public class CourseService {
     }
 
     public Course getCourseByID(UUID id) {
-        Course course = courseRepository.findOne(id);
-        if (course != null) return course;
+        Optional<Course> course = courseRepository.findById(id);
+        if (course.isPresent()) return course.get();
         return new Course(
                 /*new UUID(0,0),*/
                 "Error: Class Not Found",
@@ -41,11 +39,14 @@ public class CourseService {
         );
     }
 
-    public Set<User> getStudentsForCourse(UUID id) {
-        return courseRepository.findOne(id).getUsers();
+    public Set<User> getStudentsForCourse(UUID id) throws EntityNotFoundException {
+        Optional<Course> course = courseRepository.findById(id);
+        if(course.isPresent())
+            course.get().getUsers();
+        throw new EntityNotFoundException("getStudentsForCourse(): Course couldn't be found, fake data available!");
     }
 
-    public String getDueString() {
+    public String getDueString() { //TODO: Implement
         return null;
     }
 
@@ -54,12 +55,15 @@ public class CourseService {
     }
 
     public boolean isCourseEmpty(UUID courseID) {
-        return courseRepository.findOne(courseID).getUsers().isEmpty();
+        Optional<Course> course = courseRepository.findById(courseID);
+        if(course.isPresent())
+            course.get().getUsers().isEmpty();
+        throw new EntityNotFoundException("isCourseEmpty(): Course couldn't be found, fake data available!");
     }
 
     public void removeCourse(UUID courseID) throws CourseNotEmptyException {
         if (isCourseEmpty(courseID)) {
-            courseRepository.delete(courseID);
+            courseRepository.deleteById(courseID);
             return;
         }
         throw new CourseNotEmptyException("Course contains users, first delete users!");

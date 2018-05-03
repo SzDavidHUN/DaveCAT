@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -22,14 +23,14 @@ public class AttendanceController {
             Model model,
             @RequestParam(value = "id") UUID id
     ) {
-        Attendance attendance = attendanceService.getAttendance(id);
-        if (attendance == null)
+        Optional<Attendance> attendance = attendanceService.getAttendance(id);
+        if (attendance.isPresent())
             return "editAttendance";
 
         int away = 0;
         int present = 0;
 
-        for (davecat.modell.Attendance.Status status : attendance.getLessons()) {
+        for (davecat.modell.Attendance.Status status : attendance.get().getLessons()) {
             switch (status) {
                 case AWAY:
                     away++;
