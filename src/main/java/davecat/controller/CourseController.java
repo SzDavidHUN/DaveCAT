@@ -111,37 +111,4 @@ public class CourseController {
         return "message";
     }
 
-    @RequestMapping(value = "/editParticipants", method = RequestMethod.GET)
-    public String editParticipants(
-            Model model,
-            @RequestParam(value = "id", required = true) UUID id
-    ) {
-        model.addAttribute("courseID", id);
-        model.addAttribute("currentUsers", courseService.getStudentsForCourse(id));
-        model.addAttribute("allUsers", userService.getAllUsers());
-
-        return "editParticipants";
-    }
-
-    @RequestMapping(value = "/editCourse", method = RequestMethod.POST)
-    public String editCourse( //TODO: RENDUNDANCI/HIBÁS CLASS
-            Model model,
-            @RequestParam(value = "mode", required = true) String mode,
-            @RequestParam(value = "courseID", required = true) UUID courseID,
-            @RequestParam(value = "userID", required = true) UUID userID
-    ) {
-
-        switch (mode) {
-            case "addUser":
-                commonService.addUserToCourse(userID, courseID);
-                commonService.addAttendance(courseID, userID);
-                model.addAttribute("messageTitle", "Kurzus módosítása");
-                model.addAttribute("messageDescription", "Felhasználó hozzárendelés a kurzushoz");
-                model.addAttribute("messageType", "success");
-                model.addAttribute("messageText", "Felhasználó hozzáadása a kurzushoz iskeresen megtörtént!");
-                break;
-        }
-
-        return "message";
-    }
 }

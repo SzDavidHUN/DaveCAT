@@ -69,7 +69,7 @@ public class EditController {
     }
 
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
-    public String modify(Model model, //TODO: RENDUNDANCI/HIBÁS CLASS
+    public String modify(Model model,
                          @RequestParam(name = "mode") String mode,
                          @RequestParam(name = "courseID") UUID courseID,
                          @RequestParam(name = "userID") UUID userID) {
