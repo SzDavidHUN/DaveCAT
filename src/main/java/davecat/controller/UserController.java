@@ -29,7 +29,7 @@ public class UserController {
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public String user(
             Model model,
-            @RequestParam(name = "id", required = true) UUID id
+            @RequestParam(name = "id") UUID id
     ) {
         model.addAttribute("user", userService.getUserByID(id));
         model.addAttribute("userID", id);
@@ -48,10 +48,10 @@ public class UserController {
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     public String registerUserForReal(
             Model model,
-            @RequestParam(name = "userName", required = true) String userName,
-            @RequestParam(name = "userNeptun", required = true) String userNeptun,
-            @RequestParam(name = "userEmail", required = true) String userEmail,
-            @RequestParam(name = "userPassword", required = true) String userPassword
+            @RequestParam(name = "userName") String userName,
+            @RequestParam(name = "userNeptun") String userNeptun,
+            @RequestParam(name = "userEmail") String userEmail,
+            @RequestParam(name = "userPassword") String userPassword
     ) {
         userRepository.save(
                 new User(

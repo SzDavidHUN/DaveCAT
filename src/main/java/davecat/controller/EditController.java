@@ -34,8 +34,8 @@ public class EditController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(Model model,
-                       @RequestParam(name = "type", required = true) String type,
-                       @RequestParam(name = "id", required = true) UUID id) {
+                       @RequestParam(name = "type") String type,
+                       @RequestParam(name = "id") UUID id) {
         Collection<Attendance> attendances;
         Collection<Course> courses;
         Collection<User> users;
@@ -70,9 +70,9 @@ public class EditController {
 
     @RequestMapping(value = "/modify", method = RequestMethod.POST)
     public String modify(Model model, //TODO: RENDUNDANCI/HIBÁS CLASS
-                         @RequestParam(name = "mode", required = true) String mode,
-                         @RequestParam(name = "courseID", required = true) UUID courseID,
-                         @RequestParam(name = "userID", required = true) UUID userID) {
+                         @RequestParam(name = "mode") String mode,
+                         @RequestParam(name = "courseID") UUID courseID,
+                         @RequestParam(name = "userID") UUID userID) {
         switch (mode) {
             case "add":
                 model.addAttribute("messageTitle", "Jelenlét ív létrehozása");
