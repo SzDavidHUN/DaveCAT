@@ -57,6 +57,19 @@ public class AttendanceService {
         throw new EntityNotFoundException();
     }
 
+    public boolean existAttendance(UUID courseID, UUID userID){
+        Attendance attendance;
+        boolean found = false;
+        for (Attendance i : attendanceRepository.findAll()
+                ) {
+            if (i.getUser().getId().equals(userID) && i.getCourse().getId().equals(courseID)) {
+                attendance = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Attendance getAttendance(UUID attendanceID) throws EntityNotFoundException {
         return attendanceRepository.findOne(attendanceID);
     }

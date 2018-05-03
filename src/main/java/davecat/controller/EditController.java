@@ -1,5 +1,6 @@
 package davecat.controller;
 
+import davecat.exceptions.AttendanceAlreadyExistsException;
 import davecat.modell.Attendance;
 import davecat.modell.Course;
 import davecat.modell.User;
@@ -74,11 +75,16 @@ public class EditController {
                          @RequestParam(name = "userID", required = true) UUID userID) {
         switch (mode) {
             case "add":
-                commonService.addAttendance(courseID, userID);
-                model.addAttribute("messageTitle", "Felhasználó hozzáadása");
+                model.addAttribute("messageTitle", "Jelenlét ív létrehozása");
                 model.addAttribute("messageDescription", "");
-                model.addAttribute("messageType", "success");
-                model.addAttribute("messageText", "Felhasználó sikeresen hozzáadva a kurzushoz, valamint a jelenléti ív is létre lett hozva.");
+                try {
+                    commonService.addAttendance(courseID, userID);
+                    model.addAttribute("messageType", "success");
+                    model.addAttribute("messageText", "A felhasználó és kurzus sikeresen társítva lettek, a jelenléti ív létrejött.");
+                } catch (AttendanceAlreadyExistsException ex) {
+                    model.addAttribute("messageType", "warning");
+                    model.addAttribute("messageText", "A felhasználó és kurzus társítása már korábban megtörtént, ugyanis a jelenléti ív már létezik.");
+                }
                 break;
             case "remove":
                 commonService.removeAttendance(attendanceService.getAttendance(courseID, userID));

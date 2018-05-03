@@ -1,5 +1,6 @@
 package davecat.service;
 
+import davecat.exceptions.AttendanceAlreadyExistsException;
 import davecat.modell.Attendance;
 import davecat.modell.Course;
 import davecat.modell.User;
@@ -20,6 +21,8 @@ public class CommonService {
     private UserRepository userRepository;
     @Autowired
     private AttendanceRepository attendanceRepository;
+    @Autowired
+    private AttendanceService attendanceService;
 
     public boolean addCourseToUser(UUID courseID, UUID userID) {
         return addUserToCourse(userID, courseID);
@@ -51,7 +54,10 @@ public class CommonService {
         return true;
     }
 
-    public boolean addAttendance(UUID courseID, UUID userID) {
+    public void addAttendance(UUID courseID, UUID userID) throws AttendanceAlreadyExistsException {
+        if(attendanceService.existAttendance(courseID, userID)){
+            throw new AttendanceAlreadyExistsException();
+        }
         Course course = courseRepository.findOne(courseID);
         User user = userRepository.findOne(userID);
         Attendance attendance = new Attendance(user, course, course.getLength());
@@ -62,7 +68,6 @@ public class CommonService {
         user.getAttendances().add(attendance);
         courseRepository.save(course);
         userRepository.save(user);
-        return true;
     }
 
     public void removeAttendance(Attendance attendance) {
