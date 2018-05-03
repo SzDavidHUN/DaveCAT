@@ -37,7 +37,7 @@ public class CourseController {
         return "courses";
     }
 
-    @RequestMapping(value = "/course", method = RequestMethod.GET) //TODO: MINDENHOL REQUESTMETHOD
+    @RequestMapping(value = "/course", method = RequestMethod.GET)
     public String getCourse(@RequestParam(name = "id", required = true) String id, Model model) {
         //Course course = courseService.getUserByID(UUID.fromString(id));
         Course course = courseService.getCourseByID(UUID.fromString(id));
