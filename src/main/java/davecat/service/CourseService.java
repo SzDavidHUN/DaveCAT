@@ -31,7 +31,6 @@ public class CourseService {
                 "Error: Class Not Found",
                 "The specified class couldn't be found. This is a placeholder while I creat an exception.",
                 "Nowhere",
-                "Never",
                 0,
                 DayOfWeek.FRIDAY,
                 0,
@@ -44,10 +43,6 @@ public class CourseService {
         if(course.isPresent())
             return course.get().getUsers();
         throw new EntityNotFoundException("getStudentsForCourse(): Course couldn't be found, no fake data available!");
-    }
-
-    public String getDueString() { //TODO: Implement
-        return null;
     }
 
     public void saveCourse(Course course) {

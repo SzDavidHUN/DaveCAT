@@ -24,7 +24,6 @@ public class Course {
     private String title;
     private String description;
     private String location;
-    private String time;
     private int length;
     @Enumerated(EnumType.ORDINAL)
     private DayOfWeek day;
@@ -41,11 +40,10 @@ public class Course {
         init();
     }
 
-    public Course(String title, String description, String location, String time, int length, DayOfWeek day, Integer begin, Integer end) {
+    public Course(String title, String description, String location, int length, DayOfWeek day, Integer begin, Integer end) {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.time = time;
         this.length = length;
         this.day = day;
         this.begin = begin;
@@ -78,10 +76,6 @@ public class Course {
         return location;
     }
 
-    public String getTime() {
-        return time;
-    }
-
     public int getLength() {
         return length;
     }
@@ -108,6 +102,15 @@ public class Course {
 
     public Integer getEnd() {
         return end;
+    }
+
+    public String getTime() {
+        StringBuilder stringBuilder = new StringBuilder(getDayString());
+        stringBuilder.append(" ");
+        stringBuilder.append(getBegin());
+        stringBuilder.append("-");
+        stringBuilder.append(getEnd());
+        return stringBuilder.toString();
     }
 
     public Set<Attendance> getAttendaces() {
