@@ -24,7 +24,7 @@ public class AttendanceController {
             @RequestParam(value = "id") UUID id
     ) {
         Optional<Attendance> attendance = attendanceService.getAttendance(id);
-        if (attendance.isPresent())
+        if (!attendance.isPresent())
             return "editAttendance";
 
         int away = 0;
@@ -46,7 +46,7 @@ public class AttendanceController {
 
         model.addAttribute("away", away);
         model.addAttribute("present", present);
-        model.addAttribute("attendance", attendance);
+        model.addAttribute("attendance", attendance.get());
 
         return "editAttendance";
     }
