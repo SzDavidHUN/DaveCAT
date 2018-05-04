@@ -14,15 +14,15 @@ public class Lesson {
     String name; //Few word description
     String description; //Longer description
     String render; //This will be used to render the status in the HTML page
-    Boolean presen; //Counts as present
-    Boolean away; //Counts as away // Separate because this way you can make attendances, that aren't count
+    boolean presen; //Counts as present
+    boolean away; //Counts as away // Separate because this way you can make attendances, that aren't count
 
     // CONSTRUCTORS ====================================================================================================
 
     protected Lesson() {
     }
 
-    public Lesson(String name, String description, String render, Boolean presen, Boolean away) {
+    public Lesson(String name, String description, String render, boolean presen, boolean away) {
         this.name = name;
         this.description = description;
         this.render = render;
@@ -48,11 +48,11 @@ public class Lesson {
         return render;
     }
 
-    public Boolean getPresen() {
+    public boolean getPresen() {
         return presen;
     }
 
-    public Boolean getAway() {
+    public boolean getAway() {
         return away;
     }
 
