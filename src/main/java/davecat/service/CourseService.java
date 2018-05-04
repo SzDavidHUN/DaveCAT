@@ -42,8 +42,8 @@ public class CourseService {
     public Set<User> getStudentsForCourse(UUID id) throws EntityNotFoundException {
         Optional<Course> course = courseRepository.findById(id);
         if(course.isPresent())
-            course.get().getUsers();
-        throw new EntityNotFoundException("getStudentsForCourse(): Course couldn't be found, fake data available!");
+            return course.get().getUsers();
+        throw new EntityNotFoundException("getStudentsForCourse(): Course couldn't be found, no fake data available!");
     }
 
     public String getDueString() { //TODO: Implement
@@ -57,8 +57,8 @@ public class CourseService {
     public boolean isCourseEmpty(UUID courseID) {
         Optional<Course> course = courseRepository.findById(courseID);
         if(course.isPresent())
-            course.get().getUsers().isEmpty();
-        throw new EntityNotFoundException("isCourseEmpty(): Course couldn't be found, fake data available!");
+            return course.get().getUsers().isEmpty();
+        throw new EntityNotFoundException("isCourseEmpty(): Course couldn't be found, no fake data available!");
     }
 
     public void removeCourse(UUID courseID) throws CourseNotEmptyException {
