@@ -49,23 +49,23 @@
             <form action="/reg">
                 <div class="form-group">
                     <label for="userName">Név</label>
-                    <input type="text" class="form-control" id="userName" name="userName" aria-describedby="nameHelp" placeholder="Add meg a neved" />
+                    <input type="text" class="form-control" id="userName" name="userName" aria-describedby="nameHelp" placeholder="Add meg a neved" required/>
                     <small id="nameHelp" class="form-text text-muted">Add meg a nevedet, amely a személyi igazolványban is szerepel.</small>
                 </div>
                 <div class="form-group">
                     <label for="userNeptun">Neptunkód</label>
-                    <input type="text" class="form-control" id="userNeptun" name="userNeptun" aria-describedby="neptunHelp" placeholder="Add meg a neptunkódodat" />
+                    <input type="text" class="form-control" id="userNeptun" name="userNeptun" aria-describedby="neptunHelp" placeholder="Add meg a neptunkódodat" required/>
                     <small id="neptunHelp" class="form-text text-muted">A neptun tanulmányi rendszerben használt azonosítódat várjuk ide. Pl: <i>A2RQ44</i></small>
                 </div>
 
                 <div class="form-group">
                     <label for="userEmail">E-mail cím</label>
-                    <input type="email" class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" placeholder="Add meg az e-mail címed" />
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" placeholder="Add meg az e-mail címed" required/>
                     <small id="emailHelp" class="form-text text-muted">Olyan e-mail címet adj meg, amelyet rendszeresen ellenőrzöl! Olyan leveleket küldünk ide, amelyen a tárgy teljesítése múlhat.</small>
                 </div>
                 <div class="form-group">
                     <label for="userPassword">Jelszó</label>
-                    <input type="password" class="form-control" id="userPassword" name="userPassword" aria-describedby="passwordHelp" placeholder="Add meg a jelszavad" />
+                    <input type="password" class="form-control" id="userPassword" name="userPassword" aria-describedby="passwordHelp" placeholder="Add meg a jelszavad" required/>
                     <small id="passwordHelp" class="form-text text-muted">Megfelelően biztonságos jelszót adj meg. </small>
                 </div>
 

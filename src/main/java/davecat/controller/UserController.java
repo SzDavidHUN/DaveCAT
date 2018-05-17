@@ -49,10 +49,15 @@ public class UserController {
             @RequestParam(name = "userEmail") String userEmail,
             @RequestParam(name = "userPassword") String userPassword
     ) {
-        userService.saveUser(userName, userNeptun, userEmail, userPassword);
-
         model.addAttribute("messageTitle", "Regisztráció");
         model.addAttribute("messageDescription", "Új felhasználó regisztrálása");
+        if (userName.isEmpty() || userNeptun.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty()) {
+
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
+            return "message";
+        }
+        userService.saveUser(userName, userNeptun, userEmail, userPassword);
         model.addAttribute("messageType", "success");
         model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
 
