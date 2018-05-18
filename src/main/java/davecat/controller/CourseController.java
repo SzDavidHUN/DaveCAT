@@ -73,6 +73,15 @@ public class CourseController {
             @RequestParam(name = "courseBegin", required = true) Integer courseBegin,
             @RequestParam(name = "courseEnd", required = true) Integer courseEnd
     ) {
+
+        if (courseTitle.isEmpty() || courseDescription.isEmpty() || courseLocation.isEmpty() || courseLength.isEmpty()) {
+
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
+            model.addAttribute("messageType", "success");
+            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
+            return "message";
+        }
         courseService.saveCourse(
                 new Course(
                         courseTitle,

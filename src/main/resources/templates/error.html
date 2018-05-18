@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${user.getName()} + ' - DaveCAT 0.1'"/>
+    <title>DaveCAT 0.1</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="webjars/bootstrap/4.1.0/css/bootstrap.min.css" />
     <script src="webjars/bootstrap/4.1.0/js/bootstrap.min.js" ></script>
@@ -9,7 +9,7 @@
     <script src="webjars/popper.js/1.14.1/popper.min.js" ></script>
     <style>
         body {
-            padding-top: 45px; <!-- 65 -->
+            padding-top: 45px; <!-- 45/65 -->
         }
     </style>
 </head>
@@ -40,44 +40,16 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1 class="display-3" th:text="${user.getName()}"/>
+        <h1 class="display-3">Hiba!</h1>
+        <div>Hiba történt a kérés feldolgozása során.</div>
     </div>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-            <p>
-                <b>Neptun: </b><span th:text="${user.getNeptun()}" /><br />
-                <b>E-Mail: </b><a th:href="'mailto:' + ${user.getEmail()}" th:text="${user.getEmail()}" /><br />
-            </p>
-            <div class="card">
-                <div class="card-header">
-                    <h5><b>Kurzusok</b></h5>
-                </div>
-                <div class="card-body">
-                    <div class="card-text">
-                        <table class="table table-hover table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Kurzus neve</th>
-                                    <th>Kurzus időpontja</th>
-                                    <th>Kurzus helye</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="attendance : ${user.getAttendances()}">
-                                    <td><a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/editAttendance'(id = ${attendance.getId()})}"/></td>
-                                    <td th:text="${attendance.getCourse().getTime()}" />
-                                    <td th:text="${attendance.getCourse().getLocation()}" />
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="alert alert-danger">
+                Hiba történt a kérés feldolgozása során!
             </div>
-            <br />
-            <a class="btn btn-warning" th:href="@{'/edit'(type='user', id=${userID})}">Felhasználó szerkesztése</a>
-            <a class="btn btn-danger" th:href="'removeUser?id=' + ${user.getId()}">Felhasználó törlése</a>
         </div>
         <div class="col-sm-3">
 

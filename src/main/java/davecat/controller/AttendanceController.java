@@ -2,6 +2,7 @@ package davecat.controller;
 
 import davecat.modell.Attendance;
 import davecat.service.AttendanceService;
+import davecat.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,8 @@ public class AttendanceController {
 
     @Autowired
     AttendanceService attendanceService;
+    @Autowired
+    CommonService commonService;
 
     @RequestMapping(value = "/editAttendance", method = RequestMethod.GET)
     public String editAttendance(
@@ -80,4 +83,13 @@ public class AttendanceController {
         return "message";
     }
 
+    @RequestMapping(value = "/removeAttendace", method = RequestMethod.POST)
+    public String removeAttendace(Model model,
+                                  @RequestParam(name = "courseID") UUID courseID,
+                                  @RequestParam(name = "userID") UUID userID
+    ) {
+        commonService.addAttendance(courseID, userID);
+
+        return "message";
+    }
 }
