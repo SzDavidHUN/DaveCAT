@@ -47,6 +47,10 @@ public class User {
         attendances = new HashSet<>();
     }
 
+    public void addAttendace(Attendance attendance) {
+        attendances.add(attendance);
+    }
+
     public enum Role {
         ADMIN,
         TEACHER,
@@ -56,7 +60,7 @@ public class User {
 
     //GETTERS
 
-    public UUID getId() {
+    public UUID getId() { //TODO: RENAME Id TO userID
         return id;
     }
 

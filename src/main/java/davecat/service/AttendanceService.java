@@ -1,13 +1,13 @@
 package davecat.service;
 
 import davecat.modell.Attendance;
+import davecat.modell.Course;
+import davecat.modell.User;
 import davecat.repository.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,67 +16,51 @@ public class AttendanceService {
 
     @Autowired
     private AttendanceRepository attendanceRepository;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
 
-    public Collection<Attendance> getAllStudents() {
-        Collection<Attendance> ret = new ArrayList<>();
-        attendanceRepository.findAll().forEach(ret::add);
-        return ret;
-    }
+    public Attendance add(UUID courseID, UUID userID){
 
-    public Collection<Attendance> getAttendacesForClass(UUID courseID) {
-        Collection<Attendance> ret = new ArrayList<>();
+        Course course = courseService.getByID(courseID);
+        User user = userService.getUserByID(userID);
+        Attendance attendance = new Attendance(course, user);
+        courseService.addAttendace(course, attendance);
+        userService.addAttendance(user, attendance);
 
-        for (Attendance attendance : attendanceRepository.findAll()
+        return attendance;
+    } //new
+
+    public Attendance getByID(UUID attendaceID) throws EntityNotFoundException {
+        Optional<Attendance> byId = attendanceRepository.findById(attendaceID);
+        if(!byId.isPresent())
+            return byId.get();
+        throw new EntityNotFoundException("Couldn't find attendace for attendaceID: " + attendaceID);
+    } //new
+
+    public Attendance getByID(UUID courseID, UUID userID) throws EntityNotFoundException {
+        Iterable<Attendance> attendances = attendanceRepository.findAll();
+        for (Attendance attendance : attendances
                 ) {
-            if (attendance.getCourse().getId().equals(courseID))
-                ret.add(attendance);
-        }
-        return ret;
-    }
-
-    public Collection<Attendance> getAttendancesForUser(UUID userID) {
-        Collection<Attendance> ret = new ArrayList<>();
-
-        for (Attendance attendance : attendanceRepository.findAll()
-                ) {
-            if (attendance.getUser().getId().equals(userID))
-                ret.add(attendance);
-        }
-        return ret;
-    }
-
-    public Attendance getAttendance(UUID courseID, UUID userID) throws EntityNotFoundException {
-        Attendance attendance;
-        for (Attendance i : attendanceRepository.findAll()
-                ) {
-            if (i.getUser().getId().equals(userID) && i.getCourse().getId().equals(courseID)) {
-                attendance = i;
+            if(attendance.getCourse().getId() == courseID && attendance.getUser().getId() == userID)
                 return attendance;
-            }
         }
-        throw new EntityNotFoundException();
-    }
+        throw new EntityNotFoundException("Couldn't find attendace for courseID: " + courseID + " UserID: " + userID);
+    } //new
 
-    public boolean existAttendance(UUID courseID, UUID userID){
-        for (Attendance i : attendanceRepository.findAll()
-                ) {
-            if (i.getUser().getId().equals(userID) && i.getCourse().getId().equals(courseID)) {
-                return true;
-            }
+    public boolean isExists(UUID courseID, UUID userID){
+        try{
+            getByID(courseID, userID);
+            return true;
+        } catch (EntityNotFoundException ex){
+            return false;
         }
-        return false;
-    }
+    } //new
 
-    public Optional<Attendance> getAttendance(UUID attendanceID) throws EntityNotFoundException {
-        return attendanceRepository.findById(attendanceID);
-    }
+    public void remove(Attendance attendance){
+        courseService.removeAttendance(attendance.getCourse(), attendance);
+        userService.removeAttendance(attendance.getUser(), attendance);
+    } //OK
 
-    public void setLesson(UUID attendanceID, int lesson, Attendance.Status status) {
-        Optional<Attendance> attendance = attendanceRepository.findById(attendanceID);
-        if(!attendance.isPresent())
-            throw new EntityNotFoundException("setLesson: attendanceID not found");
-        ArrayList<Attendance.Status> lessons = attendance.get().getLessons();
-        lessons.set(lesson, status);
-        attendanceRepository.save(attendance.get());
-    }
 }

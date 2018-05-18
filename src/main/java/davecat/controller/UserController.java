@@ -57,7 +57,7 @@ public class UserController {
             model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
             return "message";
         }
-        userService.saveUser(userName, userNeptun, userEmail, userPassword);
+        userService.add(userName, userNeptun, userEmail, userPassword);
         model.addAttribute("messageType", "success");
         model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
 

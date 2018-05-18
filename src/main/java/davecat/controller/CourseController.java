@@ -1,6 +1,6 @@
 package davecat.controller;
 
-import davecat.exceptions.CourseNotEmptyException;
+import davecat.exceptions.NotEmptyException;
 import davecat.modell.Course;
 import davecat.repository.CourseRepository;
 import davecat.service.AttendanceService;
@@ -33,14 +33,14 @@ public class CourseController {
 
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
     public String listCourses(Model model) {
-        model.addAttribute("courses", courseService.getAllCourses());
+        model.addAttribute("courses", courseService.getAll());
         return "courses";
     }
 
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public String getCourse(@RequestParam(name = "id", required = true) String id, Model model) {
         //Course course = courseService.getUserByID(UUID.fromString(id));
-        Course course = courseService.getCourseByID(UUID.fromString(id));
+        Course course = courseService.getByID(UUID.fromString(id));
         model.addAttribute("courseTitle", course.getTitle());
         model.addAttribute("courseTime", course.getTime());
         model.addAttribute("coursePlace", course.getLocation());
@@ -108,10 +108,10 @@ public class CourseController {
         model.addAttribute("messageTitle", "Kurzus törlése");
         model.addAttribute("messageDescription", "");
         try {
-            courseService.removeCourse(courseID);
+            courseService.remove(courseID);
             model.addAttribute("messageType", "success");
             model.addAttribute("messageText", "A kurzus törlése sikeresen megtörtént!");
-        } catch (CourseNotEmptyException e) {
+        } catch (NotEmptyException e) {
             model.addAttribute("messageType", "danger");
             model.addAttribute("messageText", "Kurzus törlése sikertelen, mivel a kurzus még tartalmaz felhasználókat. Törlés előtt távolítsa el a felhasználókat a kurzusból!");
         }

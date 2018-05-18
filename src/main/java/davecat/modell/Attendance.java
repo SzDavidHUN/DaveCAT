@@ -26,6 +26,20 @@ public class Attendance {
         init();
     }
 
+    public Attendance(Course course, User user) {
+        this.user = user;
+        this.course = course;
+        this.length = course.getLength();
+        init();
+    } //new
+
+    public Attendance(Course course, User user, int length) {
+        this.user = user;
+        this.course = course;
+        this.length = length;
+        init();
+    }
+
     public enum Status {
         EMPTY(" "),
         PRESENT("+"),
@@ -41,13 +55,6 @@ public class Attendance {
         public String toString() {
             return render;
         }
-    }
-
-    public Attendance(User user, Course course, int length) {
-        this.user = user;
-        this.course = course;
-        this.length = length;
-        init();
     }
 
     private void init() {

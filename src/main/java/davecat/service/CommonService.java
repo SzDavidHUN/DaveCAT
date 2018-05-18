@@ -64,7 +64,7 @@ public class CommonService {
         }
         Course course = oCourse.get();
         User user = oUser.get();
-        Attendance attendance = new Attendance(user, course, course.getLength());
+        Attendance attendance = new Attendance(course, user, course.getLength());
         attendanceRepository.save(attendance);
         course.getUsers().add(user);
         user.getCourses().add(course);

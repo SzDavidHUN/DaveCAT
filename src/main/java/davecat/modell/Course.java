@@ -31,7 +31,7 @@ public class Course {
     private Integer end;
 
     @ManyToMany(targetEntity = Attendance.class)
-    private Set<Attendance> attendaces;
+    private Set<Attendance> attendances;
 
     @ManyToMany(targetEntity = User.class)
     private Set<User> users;
@@ -53,7 +53,7 @@ public class Course {
     }
 
     public void init() {
-        attendaces = new HashSet<>();
+        attendances = new HashSet<>();
         users = new HashSet<>();
     }
 
@@ -81,7 +81,7 @@ public class Course {
     }
 
     public Set<Attendance> getAttendances() {
-        return attendaces;
+        return attendances;
     }
 
     public Set<User> getUsers() {
@@ -113,15 +113,23 @@ public class Course {
         return stringBuilder.toString();
     }
 
-    public Set<Attendance> getAttendaces() {
-        return attendaces;
-    }
-
 //SETTERS
 
     //MODIFIERS
 
     public void addUser(User user) {
         users.add(user);
-    }
+    } //new
+
+    public void addAttendance(Attendance attendance){
+        attendances.add(attendance);
+    } //new
+
+    public void removeUser(User user) {
+        users.remove(user);
+    } //new
+
+    public void removeAttendance(Attendance attendance) {
+        attendances.remove(attendance);
+    } //new
 }

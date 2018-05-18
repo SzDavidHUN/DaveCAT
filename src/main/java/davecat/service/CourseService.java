@@ -1,15 +1,18 @@
 package davecat.service;
 
-import davecat.exceptions.CourseNotEmptyException;
+import davecat.exceptions.NotEmptyException;
+import davecat.modell.Attendance;
 import davecat.modell.Course;
-import davecat.modell.User;
 import davecat.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CourseService {
@@ -17,51 +20,65 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public Collection<Course> getAllCourses() {
+    protected void addAttendace(Course course, Attendance attendance) {
+        course.addUser(attendance.getUser());
+        course.addAttendance(attendance);
+        courseRepository.save(course);
+    } //new
+
+    public void removeAttendance(Course course, Attendance attendance) {
+        course.removeUser(attendance.getUser());
+        course.removeAttendance(attendance);
+        courseRepository.save(course);
+    } //new
+
+    public Course getByID(UUID courseID) throws EntityNotFoundException {
+        Optional<Course> course = courseRepository.findById(courseID);
+        if (course.isPresent()) return course.get();
+
+        throw new EntityNotFoundException("Couldn't find course by courseID: " + courseID);
+    }
+
+    public Collection<Course> getAll() {
         Collection<Course> ret = new ArrayList<>();
         courseRepository.findAll().forEach(ret::add);
         return ret;
-    }
+    } //OK
 
-    public Course getCourseByID(UUID id) {
-        Optional<Course> course = courseRepository.findById(id);
-        if (course.isPresent()) return course.get();
-        return new Course(
-                /*new UUID(0,0),*/
-                "Error: Class Not Found",
-                "The specified class couldn't be found. This is a placeholder while I creat an exception.",
-                "Nowhere",
-                0,
-                DayOfWeek.FRIDAY,
-                0,
-                23
-        );
-    }
-
-    public Set<User> getStudentsForCourse(UUID id) throws EntityNotFoundException {
-        Optional<Course> course = courseRepository.findById(id);
-        if(course.isPresent())
-            return course.get().getUsers();
-        throw new EntityNotFoundException("getStudentsForCourse(): Course couldn't be found, no fake data available!");
-    }
-
-    public void saveCourse(Course course) {
-        courseRepository.save(course);
-    }
-
-    public boolean isCourseEmpty(UUID courseID) {
+    public boolean isEmpty(UUID courseID) {
         Optional<Course> course = courseRepository.findById(courseID);
-        if(course.isPresent())
+        if (course.isPresent())
             return course.get().getUsers().isEmpty();
-        throw new EntityNotFoundException("isCourseEmpty(): Course couldn't be found, no fake data available!");
+        throw new EntityNotFoundException("isEmpty(): Course couldn't be found, no fake data available!");
+    } //OK
+
+    public Collection<Attendance> getAttendances(UUID courseID) {
+        return getAttendances(getByID(courseID));
+    } //new
+
+    public Collection<Attendance> getAttendances(Course course) {
+        return course.getAttendances();
+    } //new
+
+    public Course add(String title, String description, String location, int length, DayOfWeek day, Integer begin, Integer end) {
+        Course course = new Course(title, description, location, length, day, begin, end);
+        courseRepository.save(course);
+        return course;
     }
 
-    public void removeCourse(UUID courseID) throws CourseNotEmptyException {
-        if (isCourseEmpty(courseID)) {
+    public void remove(UUID courseID) throws NotEmptyException {
+        if (isEmpty(courseID)) {
             courseRepository.deleteById(courseID);
             return;
         }
-        throw new CourseNotEmptyException("Course contains users, first delete users!");
+        throw new NotEmptyException("Course contains users, first delete users!");
     }
+
+    //old
+
+    @Deprecated
+    public void saveCourse(Course course) {
+        courseRepository.save(course);
+    } //new: add
 
 }
