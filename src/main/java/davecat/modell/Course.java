@@ -2,13 +2,7 @@ package davecat.modell;
 
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.HashSet;
@@ -21,8 +15,11 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Column(length = 127)
     private String title;
+    @Column(length = 2047)
     private String description;
+    @Column(length = 127)
     private String location;
     private int length;
     @Enumerated(EnumType.ORDINAL)
@@ -115,13 +112,38 @@ public class Course {
 
 //SETTERS
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    public void setBegin(Integer begin) {
+        this.begin = begin;
+    }
+
+    public void setEnd(Integer end) {
+        this.end = end;
+    }
+
+
     //MODIFIERS
 
     public void addUser(User user) {
         users.add(user);
     } //new
 
-    public void addAttendance(Attendance attendance){
+    public void addAttendance(Attendance attendance) {
         attendances.add(attendance);
     } //new
 

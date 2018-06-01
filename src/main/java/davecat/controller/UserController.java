@@ -16,51 +16,48 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String users(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";
+    @RequestMapping(value = "/addUser", method = RequestMethod.GET)
+    public String addGet(Model model) {
+        return "addUser";
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String user(
-            Model model,
-            @RequestParam(name = "id") UUID id
-    ) {
-        model.addAttribute("user", userService.getUserByID(id));
-        model.addAttribute("userID", id);
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public String addPost(Model model,
+                          @RequestParam("name") String name,
+                          @RequestParam("neptun") String neptun,
+                          @RequestParam("email") String email,
+                          @RequestParam("password") String password) {
+        userService.add(name, neptun, email, password);
 
-        return "user";
+        model.addAttribute("message", name + " nevű felhasználó sikeresen létrehozva!");
+
+        return "addUser";
     }
 
-    @RequestMapping(value = "/reg", method = RequestMethod.GET)
-    public String registerUser(
-            Model model
-    ) {
+    @RequestMapping(value = "/removeUser", method = RequestMethod.POST)
+    public String removePost(Model model,
+                             @RequestParam("userID") UUID userID) {
+        userService.remove(userID);
 
-        return "reg";
+        return MessageController.generateMessage(model,
+                "Felhasználó",
+                "Felhasználó törlése",
+                "success",
+                "Felhasználó törlése sikeresen megtörtént!");
     }
 
-    @RequestMapping(value = "/reg", method = RequestMethod.POST)
-    public String registerUserForReal(
-            Model model,
-            @RequestParam(name = "userName") String userName,
-            @RequestParam(name = "userNeptun") String userNeptun,
-            @RequestParam(name = "userEmail") String userEmail,
-            @RequestParam(name = "userPassword") String userPassword
-    ) {
-        model.addAttribute("messageTitle", "Regisztráció");
-        model.addAttribute("messageDescription", "Új felhasználó regisztrálása");
-        if (userName.isEmpty() || userNeptun.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty()) {
+    @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
+    public String listUsersGet(Model model) {
+        model.addAttribute("users", userService.getAll());
 
-            model.addAttribute("messageType", "danger");
-            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
-            return "message";
-        }
-        userService.add(userName, userNeptun, userEmail, userPassword);
-        model.addAttribute("messageType", "success");
-        model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
+        return "listUsers";
+    }
 
-        return "message";
+    @RequestMapping(value = "/showUser", method = RequestMethod.GET)
+    public String showUser(Model model,
+                           @RequestParam("userID") UUID userID) {
+        model.addAttribute("user", userService.getByID(userID));
+
+        return "showUser";
     }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title='Jelenléti ív - DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1">Jelenléti ív</h1>
+        <a th:text="'Név: ' + ${attendance.getUser().getName()}" /><br />
+        <a th:text="'Kurzus: ' + ${attendance.getCourse().getTitle()}" />
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br />
+            <form action="/setAttendance" method="post">
+                <div class="form-group">
+                    <label for="occasion">Alkalom:</label>
+                    <select id="occasion" name="occasion" required class="form-control">
+                        <!--<option selected disabled>Válassz alkalmat!</option>-->
+                        <option th:each="occasion : ${#numbers.sequence(0, attendance.getLength() - 1)}" th:text="${occasion} + 1" th:value="${occasion}" />
+                    </select>
+                </div>
+                <div>
+                    <label for="lesson">Típus:</label>
+                    <select id="lesson" name="lessonID" required class="form-control">
+                        <!--<option selected disabled>Válassz típust!</option>-->
+                        <option th:each="lesson : ${lessons}" th:value="${lesson.getId()}" th:text="${lesson.getName()} + ' (' + ${lesson.getId()} + ')'" />
+                    </select>
+                </div>
+                <input type="hidden" th:value="${attendance.getId()}" name="attendanceID" />
+                <br />
+                <button type="submit" class="btn btn-success">Mentés</button>
+            </form>
+            <br />
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header"><h2>Admin</h2></div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

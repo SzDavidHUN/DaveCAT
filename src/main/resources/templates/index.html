@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title='DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1">DaveCAT</h1>
+        <p>Dave's Automatic Verification Engine for Course Attendance Tracking</p>
+    </div>
+</div>
+<div class="container" style="margin-bottom: 80px;">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br />
+            <h1>Most</h1>
+            <br />
+
+            <div class="card" th:each="course : ${now}" style="margin-bottom: 1em;">
+                <div class="card-header">
+                    <h2 th:text="${course.getTitle()}" />
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <b>Hely:</b>
+                                <p th:text="${course.getLocation()}" />
+                            </div>
+                            <div class="col-6">
+                                <a class="btn btn-primary btn-block" th:href="@{'/showCourse'(courseID=${course.getId()})}">Megtekintés</a> <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <b>Időpont:</b>
+                                <p th:text="${course.getTime()}" />
+                            </div>
+                            <div class="col-6">
+                                <a class="btn btn-primary btn-block disabled" href="#">Semmi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="col-sm-3">
+            <h1></h1>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

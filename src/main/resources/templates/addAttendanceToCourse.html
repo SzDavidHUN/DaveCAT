@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title='Jelenléti ív - DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1">Jelenléti ív</h1>
+        <p>Jelenléti ív létrehozása</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br />
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <th>Név</th>
+                <th>Neptun</th>
+                <th>+</th>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td>
+                        <a th:text="${user.getName()}" th:href="@{'/showUser'(userID=${user.getId()})}" />
+                    </td>
+                    <td th:text="${user.getNeptun()}" />
+                    <td>
+                        <form method="post" action="/addAttendance">
+                            <input type="hidden" name="userID" th:value="${user.getId()}" />
+                            <button type="submit" name="courseID" th:value="${course.getId()}">+</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header"><h2>-</h2></div>
+                <div class="card-body">
+                    -
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

@@ -19,55 +19,74 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User add(String userName, String userNeptun, String userEmail, String userPassword){
+    public User add(String name, String neptun, String email, String password) {
         User user = new User(
-                userName,
-                userNeptun,
-                userEmail,
-                userPassword,
+                name,
+                neptun,
+                email,
+                password,
                 User.Role.STUDENT
         );
         userRepository.save(user);
         return user;
-    } //OK
+    }
+
+    public void remove(UUID userID) throws NotEmptyException {
+        remove(getByID(userID));
+    }
 
     public void remove(User user) throws NotEmptyException {
-        if(user.getCourses().isEmpty()) {
+        if (user.getCourses().isEmpty()) {
             userRepository.delete(user);
             return;
         }
         throw new NotEmptyException("User still connects to attendances! userID: " + user.getId());
     }
 
-    protected void addAttendance(User user, Attendance attendance) {
-        user.addCourse(attendance.getCourse());
-        user.addAttendace(attendance);
-        userRepository.save(user);
-     } //NEW
-
-    public void removeAttendance(User user, Attendance attendance) {
-        user.removeCourse(attendance.getCourse());
-        user.removeAttendace(attendance);
-        userRepository.save(user);
-    } //NEW
-
-    public User getUserByID(UUID userID) throws EntityNotFoundException {
+    public User getByID(UUID userID) throws EntityNotFoundException {
         Optional<User> user = userRepository.findById(userID);
         if (user.isPresent()) return user.get();
         throw new EntityNotFoundException("Couldn't find user by userID: " + userID);
-    } //FIX
+    }
 
+    public boolean isEmpty(UUID userID) throws EntityNotFoundException {
+        return isEmpty(getByID(userID));
+    }
 
-    //old
+    public boolean isEmpty(User user) {
+        return user.getCourses().isEmpty();
+    }
 
-    public Collection<User> getAllUsers() {
+    public Collection<Attendance> getAttendances(UUID userID) {
+        return getAttendances(getByID(userID));
+    }
+
+    public Collection<Attendance> getAttendances(User user) {
+        return user.getAttendances();
+    }
+
+    public Collection<User> getAllByNeptun(String neptun) {
+        return userRepository.findAllByNeptun(neptun);
+    }
+
+    //PACKAGE-PRIVATE
+
+    void addAttendance(User user, Attendance attendance) {
+        user.addCourse(attendance.getCourse());
+        user.addAttendace(attendance);
+        userRepository.save(user);
+    }
+
+    void removeAttendance(User user, Attendance attendance) {
+        user.removeCourse(attendance.getCourse());
+        user.removeAttendace(attendance);
+        userRepository.save(user);
+    }
+
+    public Collection<User> getAll() {
         Collection<User> ret = new ArrayList<>();
         userRepository.findAll().forEach(ret::add);
         return ret;
     }
 
-    @Deprecated
-    public void add(User user){
-        userRepository.save(user);
-    }
 }

@@ -1,12 +1,7 @@
 package davecat.controller;
 
-import davecat.exceptions.NotEmptyException;
 import davecat.modell.Course;
-import davecat.repository.CourseRepository;
-import davecat.service.AttendanceService;
-import davecat.service.CommonService;
 import davecat.service.CourseService;
-import davecat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,101 +17,86 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CommonService commonService;
-    @Autowired
-    private AttendanceService attendanceService;
-
-    @RequestMapping(value = "/courses", method = RequestMethod.GET)
-    public String listCourses(Model model) {
-        model.addAttribute("courses", courseService.getAll());
-        return "courses";
-    }
-
-    @RequestMapping(value = "/course", method = RequestMethod.GET)
-    public String getCourse(@RequestParam(name = "id", required = true) String id, Model model) {
-        //Course course = courseService.getUserByID(UUID.fromString(id));
-        Course course = courseService.getByID(UUID.fromString(id));
-        model.addAttribute("courseTitle", course.getTitle());
-        model.addAttribute("courseTime", course.getTime());
-        model.addAttribute("coursePlace", course.getLocation());
-        model.addAttribute("courseDescription", course.getDescription());
-        model.addAttribute("courseID", course.getId());
-        model.addAttribute("attendances", attendanceService.getAttendacesForClass(UUID.fromString(id)));
-        model.addAttribute("courseDay", course.getDayString());
-        model.addAttribute("courseBegin", course.getBegin());
-        model.addAttribute("courseEnd", course.getEnd());
-        model.addAttribute("courseLength", course.getLength());
-        return "course";
-    }
 
     @RequestMapping(value = "/addCourse", method = RequestMethod.GET)
-    public String addCourse(Model model) {
-        model.addAttribute("messageBox", false);
-        model.addAttribute("message", "");
-        System.out.println("GET");
+    public String addGet(Model model) {
         return "addCourse";
     }
 
     @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
-    public String addCourseForReal(
-            Model model,
-            @RequestParam(name = "courseTitle", required = true) String courseTitle,
-            @RequestParam(name = "courseDescription", required = true) String courseDescription,
-            @RequestParam(name = "courseLocation", required = true) String courseLocation,
-            @RequestParam(name = "courseLength", required = true) String courseLength,
-            @RequestParam(name = "courseDay", required = true) DayOfWeek courseDay,
-            @RequestParam(name = "courseBegin", required = true) Integer courseBegin,
-            @RequestParam(name = "courseEnd", required = true) Integer courseEnd
-    ) {
+    public String addPost(Model model,
+                          @RequestParam("title") String title,
+                          @RequestParam("description") String description,
+                          @RequestParam("location") String location,
+                          @RequestParam("length") Integer length,
+                          @RequestParam("day") DayOfWeek day,
+                          @RequestParam("begin") Integer begin,
+                          @RequestParam("end") Integer end) {
+        courseService.add(title, description, location, length, day, begin, end);
 
-        if (courseTitle.isEmpty() || courseDescription.isEmpty() || courseLocation.isEmpty() || courseLength.isEmpty()) {
-
-            model.addAttribute("messageType", "danger");
-            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
-            model.addAttribute("messageType", "success");
-            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
-            return "message";
-        }
-        courseService.saveCourse(
-                new Course(
-                        courseTitle,
-                        courseDescription,
-                        courseLocation,
-                        Integer.parseInt(courseLength),
-                        courseDay,
-                        courseBegin,
-                        courseEnd
-                ));
-
-        model.addAttribute("messageBox", true);
-        model.addAttribute("message", "Kurzus sikeresen hozzáadva!");
-        System.out.println("POST");
+        model.addAttribute("message", "A(z) " + title + " nevű kurzus létrehozása sikeresen megtörtént!");
 
         return "addCourse";
     }
 
     @RequestMapping(value = "/removeCourse", method = RequestMethod.POST)
-    public String removeCourse(
-            Model model,
-            @RequestParam(name = "courseID") UUID courseID
-    ) {
-        model.addAttribute("messageTitle", "Kurzus törlése");
-        model.addAttribute("messageDescription", "");
-        try {
-            courseService.remove(courseID);
-            model.addAttribute("messageType", "success");
-            model.addAttribute("messageText", "A kurzus törlése sikeresen megtörtént!");
-        } catch (NotEmptyException e) {
-            model.addAttribute("messageType", "danger");
-            model.addAttribute("messageText", "Kurzus törlése sikertelen, mivel a kurzus még tartalmaz felhasználókat. Törlés előtt távolítsa el a felhasználókat a kurzusból!");
-        }
-
-        return "message";
+    public String removePost(Model model,
+                             @RequestParam("courseID") UUID courseID) {
+        courseService.remove(courseID);
+        return MessageController.generateMessage(model,
+                "Kurzus",
+                "Kurzus törlése",
+                "success",
+                "Kurzus törlése sikeresen megtörtént!");
     }
+
+    @RequestMapping(value = "/editCourse", method = RequestMethod.GET)
+    public String editGet(Model model,
+                          @RequestParam("courseID") UUID courseID) {
+        return "editCourse";
+    }
+
+    @RequestMapping(value = "/editCourse", method = RequestMethod.POST)
+    public String editPost(Model model,
+                           @RequestParam("courseID") UUID courseID,
+                           @RequestParam(value = "title", required = false) String title,
+                           @RequestParam(value = "description", required = false) String description,
+                           @RequestParam(value = "location", required = false) String location,
+                           @RequestParam(value = "length", required = false) Integer length,
+                           @RequestParam(value = "day", required = false) DayOfWeek day,
+                           @RequestParam(value = "begin", required = false) Integer begin,
+                           @RequestParam(value = "end", required = false) Integer end) {
+
+        Course course = courseService.getByID(courseID);
+
+        if (!title.isEmpty())
+            course.setTitle(title);
+        if (!description.isEmpty())
+            course.setDescription(description);
+        if (!location.isEmpty())
+            course.setLocation(location);
+
+
+        return MessageController.generateMessage(model,
+                "Kurzus",
+                "Kurzus módosítása",
+                "warning",
+                "Kurzus módosítása sikeresen megtörtént!");
+    }
+
+    @RequestMapping(value = "/listCourses", method = RequestMethod.GET)
+    public String listCourses(Model model) {
+        model.addAttribute("courses", courseService.getAll());
+        return "listCourses";
+    }
+
+    @RequestMapping(value = "/showCourse", method = RequestMethod.GET)
+    public String showCourse(Model model,
+                             @RequestParam("courseID") UUID courseID) {
+
+        model.addAttribute("course", courseService.getByID(courseID));
+        return "showCourse";
+    }
+
 
 }

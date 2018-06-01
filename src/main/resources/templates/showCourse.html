@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title=${course.getTitle()} + ' - DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1" th:text="${course.getTitle()}"/>
+        <p th:text="${course.getDescription()}" />
+    </div>
+</div>
+<div class="container" style="margin-bottom: 80px">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br />
+            <h2>Időpont</h2>
+            <p th:text="${course.getTime()}" />
+            <h2>Hely</h2>
+            <p th:text="${course.getLocation()}" />
+            <h2>Alkalmak száma</h2>
+            <p th:text="${course.getLength()}" />
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header"><h2>Admin</h2></div>
+                <div class="card-body">
+                    <form action="/addAttendance" method="get">
+                        <button type="submit" class="btn btn-success" name="courseID" th:value="${course.getId()}">Jelenléti ív létrehozása</button>
+                    </form>
+                    <br />
+                    <form action="/removeCourse" method="post">
+                        <button type="submit" class="btn btn-danger" name="courseID" th:value="${course.getId()}">Kurzus törlése</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row" style="background-color: whitesmoke">
+        <div class="col-12">
+            <br /> <h2>Felhasználók</h2> <br />
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <th>Név</th>
+                <th>Neptun</th>
+                <th th:each="occasion : ${#numbers.sequence(0, course.getLength() - 1)}" th:text="${occasion}" />
+                </thead>
+                <tbody>
+                <tr th:each="attendance : ${course.getAttendances()}">
+                    <td>
+                        <a th:text="${attendance.getUser().getName()}" th:href="@{'/showAttendance'(courseID=${course.getId()}, userID=${attendance.getUser().getId()})}" />
+                    </td>
+                    <td th:text="${attendance.getUser().getNeptun()}" />
+                    <td th:each="lesson : ${attendance.getLessons()}" th:text="${lesson.getRender()}" />
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

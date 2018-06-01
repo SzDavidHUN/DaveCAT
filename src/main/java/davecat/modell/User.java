@@ -1,13 +1,6 @@
 package davecat.modell;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -49,6 +42,14 @@ public class User {
 
     public void addAttendace(Attendance attendance) {
         attendances.add(attendance);
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+    }
+
+    public void removeAttendace(Attendance attendance) {
+        attendances.remove(attendance);
     }
 
     public enum Role {

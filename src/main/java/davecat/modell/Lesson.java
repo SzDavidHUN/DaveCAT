@@ -1,21 +1,24 @@
 package davecat.modell;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID id;
-    String name; //Few word description
-    String description; //Longer description
-    String render; //This will be used to render the status in the HTML page
-    boolean presen; //Counts as present
-    boolean away; //Counts as away // Separate because this way you can make attendances, that aren't count
+    private UUID id;
+    @Column(length = 127)
+    private String name; //Few word description
+    @Column(length = 2047)
+    private String description; //Longer description
+    @Column(length = 127)
+    private String render; //This will be used to render the status in the HTML page
+    private boolean presen; //Counts as present
+    private boolean away; //Counts as away // Separate because this way you can make attendances, that aren't count
+    @ManyToMany(targetEntity = Attendance.class)
+    private List<Attendance> attendances;
 
     // CONSTRUCTORS ====================================================================================================
 
@@ -48,12 +51,16 @@ public class Lesson {
         return render;
     }
 
-    public boolean getPresen() {
+    public boolean isPresen() {
         return presen;
     }
 
-    public boolean getAway() {
+    public boolean isAway() {
         return away;
+    }
+
+    public List<Attendance> getAttendances() {
+        return attendances;
     }
 
     // SETTERS =========================================================================================================

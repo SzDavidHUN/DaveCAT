@@ -2,7 +2,9 @@ package davecat.controller;
 
 import davecat.modell.Attendance;
 import davecat.service.AttendanceService;
-import davecat.service.CommonService;
+import davecat.service.CourseService;
+import davecat.service.LessonService;
+import davecat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,86 +12,114 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 public class AttendanceController {
 
     @Autowired
-    AttendanceService attendanceService;
+    private AttendanceService attendanceService;
     @Autowired
-    CommonService commonService;
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private LessonService lessonService;
 
-    @RequestMapping(value = "/editAttendance", method = RequestMethod.GET)
-    public String editAttendance(
+    @RequestMapping(value = "/addAttendance", method = RequestMethod.POST)
+    public String addPost(
             Model model,
-            @RequestParam(value = "id") UUID id
+            @RequestParam("courseID") UUID courseID,
+            @RequestParam("userID") UUID userID
     ) {
-        Optional<Attendance> attendance = attendanceService.getAttendance(id);
-        if (!attendance.isPresent())
-            return "editAttendance";
+        attendanceService.add(courseID, userID);
 
-        int away = 0;
-        int present = 0;
+        return MessageController.generateMessage(model,
+                "Jelenléti ív",
+                "Jelenléti ív létrehozás",
+                "success",
+                "Jelenléti ív létrehozása sikeresen megtörtént!");
+    }
 
-        for (davecat.modell.Attendance.Status status : attendance.get().getLessons()) {
-            switch (status) {
-                case AWAY:
-                    away++;
-                    break;
-                case PRESENT:
-                    present++;
-                    break;
-                default:
-                    break;
-            }
-
+    @RequestMapping(value = "/addAttendance", method = RequestMethod.GET)
+    public String addGet(
+            Model model,
+            @RequestParam(value = "courseID", required = false) UUID courseID,
+            @RequestParam(value = "userID", required = false) UUID userID
+    ) {
+        if (userID != null && courseID == null) {
+            model.addAttribute("courses", courseService.getAll());
+            model.addAttribute("user", userService.getByID(userID));
+            return "addAttendanceToUser";
+        } else if (userID == null && courseID != null) {
+            model.addAttribute("users", userService.getAll());
+            model.addAttribute("course", courseService.getByID(courseID));
+            return "addAttendanceToCourse";
+        } else {
+            return MessageController.generateMessage(model,
+                    "Hiba",
+                    "2 paraméter csak POST esetén támogatott",
+                    "warning",
+                    "Hibás lekérés!");
         }
+    }
 
-        model.addAttribute("away", away);
-        model.addAttribute("present", present);
-        model.addAttribute("attendance", attendance.get());
+    @RequestMapping(value = "/removeAttendance", method = RequestMethod.POST)
+    public String remove(Model model,
+                         @RequestParam("attendanceID") UUID attendanceID
+    ) {
 
-        return "editAttendance";
+        attendanceService.remove(attendanceID);
+
+        return MessageController.generateMessage(model,
+                "Jelenléti ív",
+                "Jelenléti ív törlése",
+                "success",
+                "Jelenléti ív törlése sikeresen megtörtént!");
     }
 
     @RequestMapping(value = "/setAttendance", method = RequestMethod.GET)
-    public String setAttendance(
-            Model model,
-            @RequestParam(name = "id") UUID id,
-            @RequestParam(name = "lesson") int lesson,
-            @RequestParam(name = "status") Attendance.Status status
-    ) {
-        attendanceService.setLesson(id, lesson, status);
+    public String set(Model model,
+                      @RequestParam("attendanceID") UUID attendanceID) {
 
-        model.addAttribute("messageTitle", "Jelenlét módosítása");
-        model.addAttribute("messageDescription", "Jelenlét sikeresen módosítva");
-        model.addAttribute("messageType", "success");
-        model.addAttribute("messageText", "A kért jelenlét módosítása sikeresen megtörtént.!");
+        model.addAttribute("attendance", attendanceService.getByID(attendanceID));
+        model.addAttribute("lessons", lessonService.getAll());
 
-        switch (status) {
-            case AWAY:
-                break;
-            case PRESENT:
-                break;
-            case EMPTY:
-                break;
-            default:
-                System.out.println("Cucc: " + status);
-                break;
-        }
-
-        return "message";
+        return "setAttendance";
     }
 
-    @RequestMapping(value = "/removeAttendace", method = RequestMethod.POST)
-    public String removeAttendace(Model model,
-                                  @RequestParam(name = "courseID") UUID courseID,
-                                  @RequestParam(name = "userID") UUID userID
-    ) {
-        commonService.addAttendance(courseID, userID);
+    @RequestMapping(value = "/setAttendance", method = RequestMethod.POST)
+    public String set(Model model,
+                      @RequestParam("attendanceID") UUID attendanceID,
+                      @RequestParam("occasion") Integer occasion,
+                      @RequestParam("lessonID") UUID lessonID) {
 
-        return "message";
+        attendanceService.setLesson(attendanceID, occasion, lessonID);
+
+        return MessageController.generateMessage(model,
+                "Jelenléti ív",
+                "Jelenlét beállítása",
+                "warning",
+                "Jelenlét státuszának beállítása sikeresen megtörtént volna ha implementálva lenne!");
+    }
+
+    @RequestMapping(value = "/showAttendance", method = RequestMethod.GET, params = "attendanceID")
+    public String show(Model model,
+                       @RequestParam("attendanceID") UUID attendanceID) {
+        Attendance attendance = attendanceService.getByID(attendanceID);
+
+        model.addAttribute("attendance", attendance);
+        model.addAttribute("present", attendanceService.getPresent(attendance));
+        model.addAttribute("away", attendanceService.getAway(attendance));
+
+
+        return "showAttendance";
+    }
+
+    @RequestMapping(value = "/showAttendance", method = RequestMethod.GET, params = {"courseID", "userID"})
+    public String show2(Model model,
+                        @RequestParam("courseID") UUID courseID,
+                        @RequestParam("userID") UUID userID) {
+        return show(model, attendanceService.getByID(courseID, userID).getId());
     }
 }
