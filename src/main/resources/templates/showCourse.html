@@ -55,7 +55,7 @@
                 <thead>
                 <th>Név</th>
                 <th>Neptun</th>
-                <th th:each="occasion : ${#numbers.sequence(0, course.getLength() - 1)}" th:text="${occasion}" />
+                <th th:each="occasion : ${#numbers.sequence(0, course.getLength() - 1)}" th:text="${occasion} + 1" />
                 </thead>
                 <tbody>
                 <tr th:each="attendance : ${course.getAttendances()}">

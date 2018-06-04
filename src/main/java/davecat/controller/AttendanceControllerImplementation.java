@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -115,12 +116,32 @@ public class AttendanceControllerImplementation implements AttendanceController 
     @Override
     @RequestMapping(value = "/batchAttendance", method = RequestMethod.GET)
     public String batchAttendanceGet(Model model,
-                              @RequestParam("courseID") UUID courseID){
+                                     @RequestParam("courseID") UUID courseID) {
 
         model.addAttribute("course", courseService.getByID(courseID));
         model.addAttribute("lessons", lessonService.getAll());
 
         return "batchAttendance";
+    }
+
+    @Override
+    @RequestMapping(value = "/batchAttendance", method = RequestMethod.POST)
+    public String batchAttendancePost(Model model,
+                                      @RequestParam(value = "occasion") Integer occasion,
+                                      @RequestParam("courseID") UUID courseID,
+                                      @RequestParam(value = "userID") List<UUID> userID,
+                                      @RequestParam(value = "lessonID") List<UUID> lessonID) {
+
+        for (int i = 0; i < userID.size(); i++) {
+            attendanceService.setLesson(attendanceService.getByID(courseID, userID.get(i)).getId(), occasion, lessonID.get(i));
+        }
+
+        return MessageController.generateMessage(model,
+                "Jelenléti ív",
+                "Jelenlét beállítása",
+                "success",
+                "Jelenlét státuszának beállítása sikeresen megtörtént!",
+                false);
     }
 
     @Override

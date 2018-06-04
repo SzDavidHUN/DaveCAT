@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface AttendanceController {
@@ -37,6 +38,13 @@ public interface AttendanceController {
                @RequestParam("occasion") Integer occasion,
                @RequestParam("lessonID") UUID lessonID);
 
+    @RequestMapping(value = "/batchAttendance", method = RequestMethod.POST)
+    String batchAttendancePost(Model model,
+                               @RequestParam(value = "occasion") Integer occasion,
+                               @RequestParam("courseID") UUID courseID,
+                               @RequestParam(value = "userID") List<UUID> userID,
+                               @RequestParam(value = "lessonID") List<UUID> lessonID);
+
     @RequestMapping(value = "/showAttendance", method = RequestMethod.GET, params = "attendanceID")
     String show(Model model,
                 @RequestParam("attendanceID") UUID attendanceID);
@@ -45,6 +53,7 @@ public interface AttendanceController {
     String show2(Model model,
                  @RequestParam("courseID") UUID courseID,
                  @RequestParam("userID") UUID userID);
+
     @RequestMapping(value = "/batchAttendance", method = RequestMethod.GET)
     public String batchAttendanceGet(Model model,
                                      @RequestParam("courseID") UUID courseID);
