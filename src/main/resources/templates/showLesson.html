@@ -37,7 +37,7 @@
                         <a th:text="${attendance.getUser().getName()}" th:href="@{'/showUser'(userID=${attendance.getUser().getId()})}" />
                     </td>
                     <td>
-                        <a th:text="${attendance.getUser().getName()}" th:href="@{'/showCourse'(courseID=${attendance.getCourse().getId()})}" />
+                        <a th:text="${attendance.getCourse().getTitle()}" th:href="@{'/showCourse'(courseID=${attendance.getCourse().getId()})}" />
                     </td>
                 </tr>
                 </tbody>

@@ -24,14 +24,14 @@
                 </thead>
                 <tbody>
                 <tr th:each="user : ${users}">
-                    <td>
+                    <td class="align-middle">
                         <a th:text="${user.getName()}" th:href="@{'/showUser'(userID=${user.getId()})}" />
                     </td>
-                    <td th:text="${user.getNeptun()}" />
-                    <td>
+                    <td th:text="${user.getNeptun()}" class="align-middle" />
+                    <td class="align-middle">
                         <form method="post" action="/addAttendance">
                             <input type="hidden" name="userID" th:value="${user.getId()}" />
-                            <button type="submit" name="courseID" th:value="${course.getId()}">+</button>
+                            <button type="submit" name="courseID" class="btn btn-success" th:value="${course.getId()}">+</button>
                         </form>
                     </td>
                 </tr>

@@ -40,7 +40,7 @@
                                 <p th:text="${course.getTime()}" />
                             </div>
                             <div class="col-6">
-                                <a class="btn btn-primary btn-block disabled" href="#">Semmi</a>
+                                <a class="btn btn-primary btn-block" th:href="@{'/batchAttendance'(courseID = ${course.getId()})}" >Kötegelt jelenlét</a>
                             </div>
                         </div>
                     </div>

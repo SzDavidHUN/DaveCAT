@@ -18,7 +18,8 @@
             <br />
             <div th:class="'alert alert-' + ${messageType}" th:text="${messageText}">
             </div>
-            <a class="btn btn-primary" href="javascript:window.location = document.referrer;">Vissza</a>
+            <a th:if="${backMode}" class="btn btn-primary" href="javascript:window.location = document.referrer;">Vissza</a>
+            <a th:if="${!backMode}" class="btn btn-primary" href="/">Vissza</a>
             <br />
         </div>
     </div>

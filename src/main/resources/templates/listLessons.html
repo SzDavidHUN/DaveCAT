@@ -30,8 +30,8 @@
                     </td>
                     <td th:text="${lesson.getRender()}" />
                     <td th:if="${lesson.isPresen()}">+</td>
-                    <td th:if="${!lesson.isPresen()}">+</td>
-                    <td th:if="${lesson.isAway()}">-</td>
+                    <td th:if="${!lesson.isPresen()}">-</td>
+                    <td th:if="${lesson.isAway()}">+</td>
                     <td th:if="${!lesson.isAway()}">-</td>
                 </tr>
                 </tbody>
