@@ -1,8 +1,5 @@
 package davecat.controller;
 
-import davecat.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,57 +7,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@Controller
-public class UserController {
+public interface UserController {
+    @RequestMapping(value = "/addUser", method = RequestMethod.GET)
+    String addGet(Model model);
 
-    @Autowired
-    private UserService userService;
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    String addPost(Model model,
+                   @RequestParam("name") String name,
+                   @RequestParam("neptun") String neptun,
+                   @RequestParam("email") String email,
+                   @RequestParam("password") String password);
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String users(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";
-    }
+    @RequestMapping(value = "/removeUser", method = RequestMethod.POST)
+    String removePost(Model model,
+                      @RequestParam("userID") UUID userID);
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String user(
-            Model model,
-            @RequestParam(name = "id") UUID id
-    ) {
-        model.addAttribute("user", userService.getUserByID(id));
-        model.addAttribute("userID", id);
+    @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
+    String listUsersGet(Model model);
 
-        return "user";
-    }
-
-    @RequestMapping(value = "/reg", method = RequestMethod.GET)
-    public String registerUser(
-            Model model
-    ) {
-
-        return "reg";
-    }
-
-    @RequestMapping(value = "/reg", method = RequestMethod.POST)
-    public String registerUserForReal(
-            Model model,
-            @RequestParam(name = "userName") String userName,
-            @RequestParam(name = "userNeptun") String userNeptun,
-            @RequestParam(name = "userEmail") String userEmail,
-            @RequestParam(name = "userPassword") String userPassword
-    ) {
-        model.addAttribute("messageTitle", "Regisztráció");
-        model.addAttribute("messageDescription", "Új felhasználó regisztrálása");
-        if (userName.isEmpty() || userNeptun.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty()) {
-
-            model.addAttribute("messageType", "danger");
-            model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikertelen: Egy vagy több mező üres!");
-            return "message";
-        }
-        userService.saveUser(userName, userNeptun, userEmail, userPassword);
-        model.addAttribute("messageType", "success");
-        model.addAttribute("messageText", "Felhasználó felhasználó regisztrálása sikeresen megtörtént!");
-
-        return "message";
-    }
+    @RequestMapping(value = "/showUser", method = RequestMethod.GET)
+    String showUser(Model model,
+                    @RequestParam("userID") UUID userID);
 }

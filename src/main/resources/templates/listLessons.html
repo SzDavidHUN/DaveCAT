@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title='Jelenlét típusok - DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1">Jelenlét</h1>
+        <p>Itt a megadható jelenlétek típusát kezelhetjük</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br />
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <th>Név</th>
+                <th>Render</th>
+                <th>Jelenlét</th>
+                <th>Hiányzás</th>
+                </thead>
+                <tbody>
+                <tr th:each="lesson : ${lessons}">
+                    <td>
+                        <a th:text="${lesson.getName()}" th:href="@{'/showLesson'(lessonID=${lesson.getId()})}" />
+                    </td>
+                    <td th:text="${lesson.getRender()}" />
+                    <td th:if="${lesson.isPresen()}">+</td>
+                    <td th:if="${!lesson.isPresen()}">-</td>
+                    <td th:if="${lesson.isAway()}">+</td>
+                    <td th:if="${!lesson.isAway()}">-</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header"><h2>Admin</h2></div>
+                <div class="card-body">
+                    <a href="/addLesson" class="btn btn-success">Új jelenlét létrehozása</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

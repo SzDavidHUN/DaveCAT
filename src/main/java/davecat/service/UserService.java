@@ -1,51 +1,31 @@
 package davecat.service;
 
+import davecat.exceptions.NotEmptyException;
+import davecat.modell.Attendance;
 import davecat.modell.User;
-import davecat.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class UserService {
+public interface UserService {
+    User add(String name, String neptun, String email, String password);
 
-    @Autowired
-    private UserRepository userRepository;
+    void remove(UUID userID) throws NotEmptyException;
 
-    public Collection<User> getAllUsers() {
-        Collection<User> ret = new ArrayList<>();
-        userRepository.findAll().forEach(ret::add);
-        return ret;
-    }
+    void remove(User user) throws NotEmptyException;
 
-    public User getUserByID(UUID id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) return user.get();
-        return new User(
-                "User not found",
-                "-404--",
-                "null@null.null",
-                "",
-                User.Role.GUEST
-        );
-    }
+    User getByID(UUID userID) throws EntityNotFoundException;
 
-    public void saveUser(User user){
-        userRepository.save(user);
-    }
+    boolean isEmpty(UUID userID) throws EntityNotFoundException;
 
-    public void saveUser(String userName, String userNeptun, String userEmail, String userPassword){
-        User user = new User(
-                        userName,
-                        userNeptun,
-                        userEmail,
-                        userPassword,
-                        User.Role.STUDENT
-                );
-        userRepository.save(user);
-    }
+    boolean isEmpty(User user);
+
+    Collection<Attendance> getAttendances(UUID userID);
+
+    Collection<Attendance> getAttendances(User user);
+
+    Collection<User> getAllByNeptun(String neptun);
+
+    Collection<User> getAll();
 }

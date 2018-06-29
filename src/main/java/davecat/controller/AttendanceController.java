@@ -1,95 +1,61 @@
 package davecat.controller;
 
-import davecat.modell.Attendance;
-import davecat.service.AttendanceService;
-import davecat.service.CommonService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
-@Controller
-public class AttendanceController {
-
-    @Autowired
-    AttendanceService attendanceService;
-    @Autowired
-    CommonService commonService;
-
-    @RequestMapping(value = "/editAttendance", method = RequestMethod.GET)
-    public String editAttendance(
+public interface AttendanceController {
+    @RequestMapping(value = "/addAttendance", method = RequestMethod.POST)
+    String addPost(
             Model model,
-            @RequestParam(value = "id") UUID id
-    ) {
-        Optional<Attendance> attendance = attendanceService.getAttendance(id);
-        if (!attendance.isPresent())
-            return "editAttendance";
+            @RequestParam("courseID") UUID courseID,
+            @RequestParam("userID") UUID userID
+    );
 
-        int away = 0;
-        int present = 0;
+    @RequestMapping(value = "/addAttendance", method = RequestMethod.GET)
+    String addGet(
+            Model model,
+            @RequestParam(value = "courseID", required = false) UUID courseID,
+            @RequestParam(value = "userID", required = false) UUID userID
+    );
 
-        for (davecat.modell.Attendance.Status status : attendance.get().getLessons()) {
-            switch (status) {
-                case AWAY:
-                    away++;
-                    break;
-                case PRESENT:
-                    present++;
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
-        model.addAttribute("away", away);
-        model.addAttribute("present", present);
-        model.addAttribute("attendance", attendance.get());
-
-        return "editAttendance";
-    }
+    @RequestMapping(value = "/removeAttendance", method = RequestMethod.POST)
+    String remove(Model model,
+                  @RequestParam("attendanceID") UUID attendanceID
+    );
 
     @RequestMapping(value = "/setAttendance", method = RequestMethod.GET)
-    public String setAttendance(
-            Model model,
-            @RequestParam(name = "id") UUID id,
-            @RequestParam(name = "lesson") int lesson,
-            @RequestParam(name = "status") Attendance.Status status
-    ) {
-        attendanceService.setLesson(id, lesson, status);
+    String set(Model model,
+               @RequestParam("attendanceID") UUID attendanceID);
 
-        model.addAttribute("messageTitle", "Jelenlét módosítása");
-        model.addAttribute("messageDescription", "Jelenlét sikeresen módosítva");
-        model.addAttribute("messageType", "success");
-        model.addAttribute("messageText", "A kért jelenlét módosítása sikeresen megtörtént.!");
+    @RequestMapping(value = "/setAttendance", method = RequestMethod.POST)
+    String set(Model model,
+               @RequestParam("attendanceID") UUID attendanceID,
+               @RequestParam("occasion") Integer occasion,
+               @RequestParam("lessonID") UUID lessonID);
 
-        switch (status) {
-            case AWAY:
-                break;
-            case PRESENT:
-                break;
-            case EMPTY:
-                break;
-            default:
-                System.out.println("Cucc: " + status);
-                break;
-        }
+    @RequestMapping(value = "/batchAttendance", method = RequestMethod.POST)
+    String batchAttendancePost(Model model,
+                               @RequestParam(value = "occasion") Integer occasion,
+                               @RequestParam("courseID") UUID courseID,
+                               @RequestParam(value = "userID") List<UUID> userID,
+                               @RequestParam(value = "lessonID") List<UUID> lessonID);
 
-        return "message";
-    }
+    @RequestMapping(value = "/showAttendance", method = RequestMethod.GET, params = "attendanceID")
+    String show(Model model,
+                @RequestParam("attendanceID") UUID attendanceID);
 
-    @RequestMapping(value = "/removeAttendace", method = RequestMethod.POST)
-    public String removeAttendace(Model model,
-                                  @RequestParam(name = "courseID") UUID courseID,
-                                  @RequestParam(name = "userID") UUID userID
-    ) {
-        commonService.addAttendance(courseID, userID);
+    @RequestMapping(value = "/showAttendance", method = RequestMethod.GET, params = {"courseID", "userID"})
+    String show2(Model model,
+                 @RequestParam("courseID") UUID courseID,
+                 @RequestParam("userID") UUID userID);
 
-        return "message";
-    }
+    @RequestMapping(value = "/batchAttendance", method = RequestMethod.GET)
+    public String batchAttendanceGet(Model model,
+                                     @RequestParam("courseID") UUID courseID);
+
 }

@@ -1,32 +1,20 @@
 package davecat.controller;
 
-import org.springframework.stereotype.Controller;
+import davecat.exceptions.AttendanceAlreadyExistsException;
+import davecat.exceptions.NotEmptyException;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
-@ControllerAdvice
-public class ExceptionController {
+public interface ExceptionController {
+    @ExceptionHandler(EntityNotFoundException.class)
+    String EntityNotFoundExceptionHandler(Model model, HttpServletRequest req, Exception ex);
 
-    @ExceptionHandler(java.lang.NumberFormatException.class)
-    public String NumberFormatExceptionHandler() {
-        return "";
-    }
+    @ExceptionHandler(NotEmptyException.class)
+    String NotEmptyExceptionHandler(Model model, HttpServletRequest req, Exception ex);
 
-    /*@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Anyád pitsája!")*/
-    @ExceptionHandler
-    public String Exception(Model model, HttpServletRequest req, Exception ex) {
-        System.out.println("Yolo");
-
-        model.addAttribute("messageTitle", "Hiba!");
-        model.addAttribute("messageDescription", "Hiba történt a kérés feldolgázsa során!");
-        model.addAttribute("messageType", "danger");
-        model.addAttribute("messageText", ex.getMessage());
-
-        return "message";
-    }
-
+    @ExceptionHandler(AttendanceAlreadyExistsException.class)
+    String AttendanceAlreadyExistsExceptionHandler(Model model, HttpServletRequest req, Exception ex);
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/frame :: header (title=${user.getName()} + ' - DaveCAT 0.1')">
+
+<body>
+<div th:replace="fragments/frame :: menu">&nbsp;</div>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-1" th:text="${user.getName()}"/>
+        <a th:text="${user.getNeptun()}" /><br />
+        <a th:text="${user.getEmail()}" th:href="'mailto:'+${user.getEmail()}"/>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9" style="background-color: whitesmoke">
+            <br /> <h2>Kurzusok</h2> <br />
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <th>Név</th>
+                <th>Idő</th>
+                <th>Hely</th>
+                <th></th>
+                </thead>
+                <tbody>
+                <tr th:each="course : ${user.getCourses()}">
+                    <td>
+                        <a th:text="${course.getTitle()}" th:href="@{'/showAttendance'(courseID=${course.getId()}, userID=${user.getId()})}" />
+                    </td>
+                    <td th:text="${course.getTime()}" />
+                    <td th:text="${course.getLocation()}" />
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-header"><h2>Admin</h2></div>
+                <div class="card-body">
+                    <form action="/addAttendance" method="get">
+                        <button type="submit" class="btn btn-success" name="userID" th:value="${user.getId()}">Jelenléti ív létrehozása</button>
+                    </form>
+                    <br />
+                    <form action="/removeUser" method="post">
+                        <button type="submit" class="btn btn-danger" name="userID" th:value="${user.getId()}">Felhasználó törlése</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/frame :: footer" />
+
+</body>
+</html>

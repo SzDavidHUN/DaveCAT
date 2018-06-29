@@ -1,12 +1,10 @@
 package davecat.modell;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import davecat.exceptions.InvalidOccasionException;
+
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,49 +16,36 @@ public class Attendance {
     private User user;
     @ManyToOne(targetEntity = Course.class)
     private Course course;
-    @Lob
-    private ArrayList<Status> lessons;
+    @ManyToMany(targetEntity = Lesson.class)
+    private List<Lesson> lessons;
     private int length;
+
+    private void init() {
+        lessons = new ArrayList<>(length);
+    }
 
     protected Attendance() {
         init();
     }
 
-    public enum Status {
-        EMPTY(" "),
-        PRESENT("+"),
-        AWAY("-");
+    public Attendance(Course course, User user) {
+        this.user = user;
+        this.course = course;
+        this.length = course.getLength();
+        init();
+    } //new
 
-        private final String render;
-
-        Status(String render) {
-            this.render = render;
-        }
-
-        @Override
-        public String toString() {
-            return render;
-        }
-    }
-
-    public Attendance(User user, Course course, int length) {
+    public Attendance(Course course, User user, int length) {
         this.user = user;
         this.course = course;
         this.length = length;
         init();
     }
 
-    private void init() {
-        lessons = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            lessons.add(i, Status.EMPTY);
-        }
-    }
-
-    public boolean setLesson(Status status, int lesson) {
-        if (lesson >= length || lesson < 0)
-            return false; //EXCEPTION kéne
-        lessons.add(lesson, status);
+    public boolean setLesson(Lesson lesson, int occasion) {
+        if (occasion >= length || occasion < 0)
+            throw new InvalidOccasionException();
+        lessons.add(occasion, lesson);
         return true;
     }
 
@@ -79,7 +64,7 @@ public class Attendance {
         return course;
     }
 
-    public ArrayList<Status> getLessons() {
+    public List<Lesson> getLessons() {
         return lessons;
     }
 

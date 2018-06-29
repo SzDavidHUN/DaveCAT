@@ -2,13 +2,7 @@ package davecat.modell;
 
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.format.TextStyle;
 import java.util.HashSet;
@@ -21,8 +15,11 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Column(length = 127)
     private String title;
+    @Column(length = 2047)
     private String description;
+    @Column(length = 127)
     private String location;
     private int length;
     @Enumerated(EnumType.ORDINAL)
@@ -31,7 +28,7 @@ public class Course {
     private Integer end;
 
     @ManyToMany(targetEntity = Attendance.class)
-    private Set<Attendance> attendaces;
+    private Set<Attendance> attendances;
 
     @ManyToMany(targetEntity = User.class)
     private Set<User> users;
@@ -53,7 +50,7 @@ public class Course {
     }
 
     public void init() {
-        attendaces = new HashSet<>();
+        attendances = new HashSet<>();
         users = new HashSet<>();
     }
 
@@ -81,7 +78,7 @@ public class Course {
     }
 
     public Set<Attendance> getAttendances() {
-        return attendaces;
+        return attendances;
     }
 
     public Set<User> getUsers() {
@@ -113,15 +110,48 @@ public class Course {
         return stringBuilder.toString();
     }
 
-    public Set<Attendance> getAttendaces() {
-        return attendaces;
+//SETTERS
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-//SETTERS
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    public void setBegin(Integer begin) {
+        this.begin = begin;
+    }
+
+    public void setEnd(Integer end) {
+        this.end = end;
+    }
+
 
     //MODIFIERS
 
     public void addUser(User user) {
         users.add(user);
-    }
+    } //new
+
+    public void addAttendance(Attendance attendance) {
+        attendances.add(attendance);
+    } //new
+
+    public void removeUser(User user) {
+        users.remove(user);
+    } //new
+
+    public void removeAttendance(Attendance attendance) {
+        attendances.remove(attendance);
+    } //new
 }
